@@ -1,2 +1,12 @@
-<h1>Pages#home</h1>
-<p>Find me in app/views/pages/home.html.erb</p>
+<div class="container">
+  <h1>Pages#home</h1>
+  <p>Find me in app/views/pages/home.html.erb</p>
+  <% if user_signed_in? %>
+    <p>Hello <%= current_user.email %></p>
+  <% else %>
+    <p>You are not logged in</p>
+  <% end %>
+  <p class="notice"><%= notice %></p>
+  <p class="alert"><%= alert %></p>
+  <%= link_to 'See all flats', flats_path %>
+</div>
