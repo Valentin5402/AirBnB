@@ -1,20 +1,29 @@
 class FlatsController < ApplicationController
   skip_before_action :authenticate_user!, only: :index
-  before_action :set_flat, only: [:show, :edit, :update]
-
+  before_action :set_flat, only: [:show, :edit, :update, :destroy]
   def index
-    @flats = Flat.all
+    @flats = policy_scope(Flat)
+    @markers = @flats.geocoded.map do |flat|
+      {
+        lat: flat.latitude,
+        lng: flat.longitude
+      }
+    end
   end
 
   def show
+    @marker = [{ lat: @flat.latitude, lng: @flat.longitude }]
   end
 
   def new
     @flat = Flat.new
+    authorize @flat
   end
 
   def create
     @flat = Flat.new(params_flat)
+    @flat.user = current_user
+    authorize @flat
     if @flat.save
       redirect_to flats_path
     else
@@ -34,7 +43,7 @@ class FlatsController < ApplicationController
   end
 
   def destroy
-    Flat.find(params[:id]).destroy
+    @flat.destroy
     redirect_to flats_path
   end
 
@@ -42,6 +51,7 @@ class FlatsController < ApplicationController
 
   def set_flat
     @flat = Flat.find(params[:id])
+    authorize @flat
   end
 
   def params_flat

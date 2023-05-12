@@ -4,4 +4,7 @@ class Flat < ApplicationRecord
   validates :description, presence: true
   validates :price_per_night, numericality: { greater_than: 0 }
   validates :number_of_guests, numericality: { greater_than: 0 }
+  belongs_to :user
+  geocoded_by :address
+  after_validation :geocode, if: :will_save_change_to_address?
 end

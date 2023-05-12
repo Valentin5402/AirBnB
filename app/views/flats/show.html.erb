@@ -6,4 +6,9 @@
 
   <p>Price per night: <%= @flat.price_per_night %></p>
   <p>Number of guests: <%= @flat.number_of_guests %></p>
+  <p>Latitude: <%= @flat.latitude %></p>
+  <p>Longitude: <%= @flat.longitude %></p>
+  <p>Owner : <%= "#{@flat.user[:firstName]} #{@flat.user[:lastName]}" %></p>
+
+
 </div>

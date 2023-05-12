@@ -4,6 +4,7 @@
     <% @flats.each do |flat| %>
       <li>
         <%= link_to flat.name, flat_path(flat) %>
+        <%= link_to 'Edit', edit_flat_path(flat) %>
         <%= link_to "Delete",
           flat_path(flat),
           data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}
@@ -12,4 +13,8 @@
     <% end %>
   </ul>
   <%= link_to 'Add flat', new_flat_path %>
+  <div style="width: 100%; height: 600px;"
+    data-controller="map"
+    data-map-markers-value="<%= @markers.to_json %>"
+    data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>"></div>
 </div>
