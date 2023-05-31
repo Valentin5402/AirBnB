@@ -14,6 +14,15 @@ class FlatsController < ApplicationController
   end
 
   def show
+    @bookings = Booking.all
+    @my_bookings_of_this_flat = []
+    @bookings.each do |booking|
+      @my_bookings_of_this_flat << booking if booking.user == current_user
+    end
+    @other_bookings_for_my_flat = []
+    @bookings.each do |booking|
+      @other_bookings_for_my_flat << booking if @flat.user == current_user
+    end
     @marker = [{ lat: @flat.latitude,
                  lng: @flat.longitude,
                  info_window: render_to_string(partial: "info_window", locals: {flat: @flat}),

@@ -9,6 +9,19 @@
   <p>Latitude: <%= @flat.latitude %></p>
   <p>Longitude: <%= @flat.longitude %></p>
   <p>Owner : <%= "#{@flat.user[:firstName]} #{@flat.user[:lastName]}" %></p>
+  <% if current_user!= @flat.user %>
+    <%= link_to "Book this flat", new_flat_booking_path(@flat) %>
+  <% end %>
+  <% if current_user != @flat.user %>
+    <% @my_bookings_of_this_flat.each do |booking| %>
+      <p>Booking from <%= booking.start_date %> to  <%= booking.end_date %></p>
+    <% end %>
+  <% end %>
+  <% if current_user == @flat.user %>
+    <% @other_bookings_for_my_flat.each do |booking| %>
+      <p>Booking from <%= booking.start_date %> to  <%= booking.end_date %> by <%= booking.user.lastName %> <%= booking.user.firstName %></p>
+    <% end %>
+  <% end %>
   <div style="width: 100%; height: 600px;"
     data-controller="map"
     data-map-markers-value="<%= @marker.to_json %>"
