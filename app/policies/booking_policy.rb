@@ -14,10 +14,10 @@ class BookingPolicy < ApplicationPolicy
   end
 
   def create?
-    @user != record.flat.user
+    user != record.flat.user
   end
 
   def show?
-    @user == record.flat.user || @user == record.user
+    user == record.flat.user || user == record.user
   end
 end
