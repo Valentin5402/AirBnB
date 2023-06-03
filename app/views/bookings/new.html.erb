@@ -3,5 +3,15 @@
     <%= f.input :start_date %>
     <%= f.input :end_date %>
     <%= f.button :submit%>
+
+    <% if @booking.errors.any? %>
+      <div class="alert alert-danger">
+        <ul>
+          <% @booking.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
   <% end %>
 </div>

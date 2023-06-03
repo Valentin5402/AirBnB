@@ -14,13 +14,19 @@
     <p>Booking from <%= booking.start_date %> to <%= booking.end_date %></p>
   <% end %>
 
-  <%= link_to "Book this flat", new_flat_booking_path(@flat) %>
-
   <% @other_bookings_for_my_flat.each do |booking| %>
     <p>Booking from <%= booking.start_date %> to <%= booking.end_date %> by <%= booking.user.lastName %> <%= booking.user.firstName %></p>
   <% end %>
 
-
+<% unless @flat.user == current_user %>
+<div class="container">
+  <%= simple_form_for [@flat, @booking] do |f| %>
+    <%= f.input :start_date %>
+    <%= f.input :end_date %>
+    <%= f.button :submit%>
+    <% end %>
+</div>
+<% end %>
 
   <div style="width: 100%; height: 600px;"
     data-controller="map"

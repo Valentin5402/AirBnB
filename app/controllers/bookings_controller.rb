@@ -17,7 +17,7 @@ class BookingsController < ApplicationController
     if @booking.save
       redirect_to flat_path(@flat)
     else
-      render :new, status: :unprocessable_entity
+      render 'flats/show', status: :unprocessable_entity
     end
   end
 
