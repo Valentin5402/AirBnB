@@ -16,7 +16,6 @@ class FlatsController < ApplicationController
 
   def show
     @bookings = Booking.all
-    @booking = Booking.new
     # Je veux afficher mes réservations si je suis sur la page de l'appartement de quelqu'un d'autre
     # Seulement pour celui qui a réservé
     @my_bookings_of_this_flat = @bookings.select { |booking| booking.user == current_user && booking.flat == @flat }
