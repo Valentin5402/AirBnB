@@ -32,6 +32,20 @@ class BookingsController < ApplicationController
     end
   end
 
+  def accept
+    @booking = Booking.find(params[:id])
+    @booking.update(confirmation: "accepted")
+    authorize @booking
+    redirect_to bookings_path, notice: "La réservation a été acceptée."
+  end
+
+  def refuse
+    @booking = Booking.find(params[:id])
+    @booking.update(confirmation: "refused")
+    authorize @booking
+    redirect_to bookings_path, notice: "La réservation a été refusée."
+  end
+
   private
 
   def booking_params
