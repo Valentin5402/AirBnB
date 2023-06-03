@@ -8,7 +8,7 @@
     <p>Arrivée: <%= booking.start_date %></p>
     <p>Départ: <%= booking.end_date %></p>
     <p>Statut: <%= booking.confirmation %></p>
-    <% if booking.flat.user != current_user && !booking.reviews.exists? %>
+    <% if booking.flat.user != current_user && !booking.reviews.exists? && booking.confirmation == "accepted" && booking.end_date <= Date.today%>
       <%= simple_form_for ([booking, @review]) do |f| %>
       <%= f.hidden_field :booking_id, value: booking.id %>
       <%= f.input :comment %>

@@ -1,3 +1,5 @@
+require 'date'
+
 class BookingsController < ApplicationController
   include Pundit
 
@@ -21,6 +23,7 @@ class BookingsController < ApplicationController
     @booking = Booking.new(booking_params)
     @booking.user = current_user
     @booking.flat = @flat
+    @booking.confirmation = "pending"
     authorize @booking
     if @booking.save
       redirect_to flat_path(@flat)
