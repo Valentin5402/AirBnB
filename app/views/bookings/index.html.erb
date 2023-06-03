@@ -2,7 +2,7 @@
 
   <h1>Mes réservations</h1>
 
-  <% @all_bookings.each do |booking| %>
+  <% @bookings.each do |booking| %>
     <p>Flat: <%= booking.flat.name %></p>
     <p>Adresse: <%= booking.flat.address %></p>
     <p>Arrivée: <%= booking.start_date %></p>
@@ -14,7 +14,7 @@
       <%= link_to "Refuser", refuse_booking_path(booking), data: {"turbo-method": :patch}, class: "btn btn-danger" %>
     <% end %>
 
-    <% if booking.flat.user != current_user && !booking.reviews.exists? && booking.confirmation == "accepted" && booking.end_date <= Date.today%>
+    <% if booking.flat.user != current_user && !booking.reviews.exists? && booking.confirmation == "accepted" && booking.end_date <= Date.today %>
       <%= simple_form_for ([booking, @review]) do |f| %>
       <%= f.hidden_field :booking_id, value: booking.id %>
       <%= f.input :comment %>

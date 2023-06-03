@@ -14,7 +14,9 @@
     <p>Booking from <%= booking.start_date %> to <%= booking.end_date %></p>
   <% end %>
 
-  <%= link_to "Book this flat", new_flat_booking_path(@flat) %>
+  <% if @flat.user != current_user %>
+    <%= link_to "Book this flat", new_flat_booking_path(@flat) %>
+  <% end %>
 
   <% @other_bookings_for_my_flat.each do |booking| %>
     <p>Booking from <%= booking.start_date %> to <%= booking.end_date %> by <%= booking.user.lastName %> <%= booking.user.firstName %></p>

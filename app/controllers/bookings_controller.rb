@@ -4,10 +4,9 @@ class BookingsController < ApplicationController
   include Pundit
 
   def index
-    @bookings = policy_scope(Booking.where(user_id: current_user.id))
+    @bookings_as_tenant = policy_scope(Booking.where(user_id: current_user.id))
     @bookings_as_owner = policy_scope(Booking.joins(:flat).where(flats: { user_id: current_user.id }))
-    authorize @bookings
-    @all_bookings = @bookings.to_a + @bookings_as_owner.to_a
+    @bookings = @bookings_as_tenant.to_a + @bookings_as_owner.to_a
     @review = Review.new
   end
 
