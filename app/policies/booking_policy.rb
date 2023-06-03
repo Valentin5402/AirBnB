@@ -20,4 +20,8 @@ class BookingPolicy < ApplicationPolicy
   def show?
     user == record.flat.user || user == record.user
   end
+
+  def index?
+    true
+  end
 end

@@ -1,4 +1,11 @@
 class BookingsController < ApplicationController
+  include Pundit
+
+  def index
+    @bookings = policy_scope(Booking.where(user_id: current_user.id))
+    authorize @bookings
+  end
+
   def new
     @booking = Booking.new
     @flat = Flat.find(params[:flat_id])
