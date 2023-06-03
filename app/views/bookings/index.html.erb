@@ -2,6 +2,8 @@
 
   <h1>Mes réservations</h1>
 
+  <h2>En tant que locataire</h2>
+
   <% @bookings.each do |booking| %>
     <p>Flat: <%= booking.flat.name %></p>
     <p>Adresse: <%= booking.flat.address %></p>
@@ -9,7 +11,7 @@
     <p>Départ: <%= booking.end_date %></p>
     <p>Statut: <%= booking.confirmation %></p>
 
-    <% if booking.confirmation == "pending" %>
+    <% if booking.confirmation == "pending" && booking.flat.user == current_user %>
       <%= link_to "Accepter", accept_booking_path(booking), data: {"turbo-method": :patch}, class: "btn btn-success" %>
       <%= link_to "Refuser", refuse_booking_path(booking), data: {"turbo-method": :patch}, class: "btn btn-danger" %>
     <% end %>
@@ -23,6 +25,30 @@
       <% end %>
     <% end %>
 
+  <% end %>
+
+  <h2>En tant que propriétaire</h2>
+
+    <% @bookings_as_owner.each do |booking| %>
+    <p>Flat: <%= booking.flat.name %></p>
+    <p>Adresse: <%= booking.flat.address %></p>
+    <p>Arrivée: <%= booking.start_date %></p>
+    <p>Départ: <%= booking.end_date %></p>
+    <p>Statut: <%= booking.confirmation %></p>
+
+    <% if booking.confirmation == "pending" && booking.flat.user == current_user %>
+      <%= link_to "Accepter", accept_booking_path(booking), data: {"turbo-method": :patch}, class: "btn btn-success" %>
+      <%= link_to "Refuser", refuse_booking_path(booking), data: {"turbo-method": :patch}, class: "btn btn-danger" %>
+    <% end %>
+
+    <% if booking.flat.user != current_user && !booking.reviews.exists? && booking.confirmation == "accepted" && booking.end_date <= Date.today%>
+      <%= simple_form_for ([booking, @review]) do |f| %>
+      <%= f.hidden_field :booking_id, value: booking.id %>
+      <%= f.input :comment %>
+      <%= f.input :rating %>
+      <%= f.button :submit%>
+      <% end %>
+    <% end %>
   <% end %>
 
 </div>
