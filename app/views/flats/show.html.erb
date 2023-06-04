@@ -4,8 +4,10 @@
   <p>Address: <%= @flat.address %></p>
   <p>Description: <%= @flat.description %></p>
 
-  <% @article.photos.each do |photo| %>
-  <%= cl_image_tag photo.key, height: 300, width: 400, crop: :fill %>
+  <% if !@flat.photos.empty? %>
+    <% @flat.photos.each do |photo| %>
+      <%= cl_image_tag photo.key, height: 300, width: 400, crop: :fill %>
+    <% end %>
   <% end %>
 
 
@@ -22,7 +24,9 @@
   <% if @flat.user != current_user %>
     <%= link_to "Book this flat", new_flat_booking_path(@flat) %>
   <% end %>
-
+  <% if @flat.user == current_user %>
+    <%= link_to "Update this flat", edit_flat_path(@flat) %>
+  <% end %>
   <% @other_bookings_for_my_flat.each do |booking| %>
     <p>Booking from <%= booking.start_date %> to <%= booking.end_date %> by <%= booking.user.lastName %> <%= booking.user.firstName %></p>
   <% end %>

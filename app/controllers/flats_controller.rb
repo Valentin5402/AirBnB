@@ -25,7 +25,7 @@ class FlatsController < ApplicationController
     @marker = [{ lat: @flat.latitude,
                  lng: @flat.longitude,
                  info_window: render_to_string(partial: "info_window", locals: {flat: @flat}),
-                 marker_html: render_to_string(partial: "markershow") }]
+                 marker_html: render_to_string(partial: "marker", locals: {flat: @flat}) }]
   end
 
   def new
