@@ -22,6 +22,9 @@ class FlatsController < ApplicationController
     # Je veux afficher les réservations d'autres personnes de mon appartement si je suis sur la page de mon appartement
     # Seulement pour le propriétaire de l'appartement
     @other_bookings_for_my_flat = @bookings.select { |booking| @flat.user == current_user && booking.flat == @flat }
+    @reviews = @flat.reviews
+    @count_of_reviews = @reviews.size
+    @average_rating = @reviews.average(:rating)
     @marker = [{ lat: @flat.latitude,
                  lng: @flat.longitude,
                  info_window: render_to_string(partial: "info_window", locals: {flat: @flat}),
