@@ -8,8 +8,8 @@ class FlatsController < ApplicationController
       {
         lat: flat.latitude,
         lng: flat.longitude,
-        info_window: render_to_string(partial: "info_window", locals: {flat: flat}),
-        marker_html: render_to_string(partial: "marker", locals: {flat: flat})
+        info_window: render_to_string(partial: "info_window", locals: { flat: flat }),
+        marker_html: render_to_string(partial: "marker", locals: { flat: flat })
       }
     end
   end
@@ -23,12 +23,12 @@ class FlatsController < ApplicationController
     # Seulement pour le propriétaire de l'appartement
     @other_bookings_for_my_flat = @bookings.select { |booking| @flat.user == current_user && booking.flat == @flat }
     @reviews = @flat.reviews
-    @count_of_reviews = @reviews.size
+    @number_of_reviews = @reviews.size
     @average_rating = @reviews.average(:rating)
     @marker = [{ lat: @flat.latitude,
                  lng: @flat.longitude,
-                 info_window: render_to_string(partial: "info_window", locals: {flat: @flat}),
-                 marker_html: render_to_string(partial: "marker", locals: {flat: @flat}) }]
+                 info_window: render_to_string(partial: "info_window", locals: { flat: @flat }),
+                 marker_html: render_to_string(partial: "marker", locals: { flat: @flat }) }]
   end
 
   def new
