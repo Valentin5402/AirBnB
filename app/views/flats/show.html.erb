@@ -4,6 +4,11 @@
   <p>Address: <%= @flat.address %></p>
   <p>Description: <%= @flat.description %></p>
 
+  <% @article.photos.each do |photo| %>
+  <%= cl_image_tag photo.key, height: 300, width: 400, crop: :fill %>
+  <% end %>
+
+
   <p>Price per night: <%= @flat.price_per_night %></p>
   <p>Number of guests: <%= @flat.number_of_guests %></p>
   <p>Latitude: <%= @flat.latitude %></p>
