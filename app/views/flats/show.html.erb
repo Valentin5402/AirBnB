@@ -4,12 +4,12 @@
     <% if @average_rating %>
       <p><i class="fa-solid fa-star"></i> <%= number_with_precision(@average_rating, precision: 2) %></p>
     <% else %>
-      <p>Ce logement n'a pas encore de commentaire</p>
+      <p><i class="fa-solid fa-star"></i> Ce logement n'a pas encore d'avis</p>
     <% end %>
+      <% if @count_of_reviews >= 1%>
     <p class="mx-2">·</p>
     <p>
-      <% if @count_of_reviews %>
-      <p><%= @count_of_reviews %> commentaires</p>
+      <p><%= @count_of_reviews %> avis</p>
       <% end %>
     </p>
     <p class="mx-2">·</p>
@@ -50,7 +50,7 @@
     </div>
     <div class="border-bottom mt-4">
 
-    <% if @average_rating >= 4 %>
+    <% if @average_rating && @average_rating >= 4 %>
       <div class="d-flex flex-row">
         <div>
           <p><i class="fa-solid fa-medal fa-2x"></i></p>
@@ -98,8 +98,8 @@
         <div class="d-inline-flex align-items-center">
           <% if @average_rating %>
             <p class="m-0"><i class="fa-solid fa-star"></i> <%= number_with_precision(@average_rating, precision: 2) %></p>
-          <% end %>
           <p class="mx-2 m-0">·</p>
+          <% end %>
           <p>
             <% if @count_of_reviews %>
               <p class="m-0 text-gray"><%= @count_of_reviews %> commentaires</p>
@@ -130,9 +130,9 @@
     <% else %>
       <p>Ce logement n'a pas encore de commentaire</p>
     <% end %>
-    <p class="mx-2">·</p>
     <p>
-      <% if @count_of_reviews %>
+      <% if @count_of_reviews >=1 %>
+    <p class="mx-2">·</p>
       <p><%= @count_of_reviews %> commentaires</p>
       <% end %>
     </p>
