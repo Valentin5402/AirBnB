@@ -11,3 +11,9 @@
 // Your CSS partials
 @import "components/index";
 @import "pages/index";
+
+.main-container{
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  grid-gap: 16px;
+}
