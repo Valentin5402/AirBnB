@@ -4,7 +4,7 @@
   <p>Address: <%= @flat.address %></p>
   <p>Description: <%= @flat.description %></p>
 
-  <% @article.photos.each do |photo| %>
+  <% @flat.photos.each do |photo| %>
   <%= cl_image_tag photo.key, height: 300, width: 400, crop: :fill %>
   <% end %>
 
