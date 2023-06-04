@@ -22,10 +22,11 @@ class FlatsController < ApplicationController
     # Je veux afficher les réservations d'autres personnes de mon appartement si je suis sur la page de mon appartement
     # Seulement pour le propriétaire de l'appartement
     @other_bookings_for_my_flat = @bookings.select { |booking| @flat.user == current_user && booking.flat == @flat }
-    @marker = [{ lat: @flat.latitude,
-                 lng: @flat.longitude,
-                 info_window: render_to_string(partial: "info_window", locals: {flat: @flat}),
-                 marker_html: render_to_string(partial: "marker") }]
+    flat = @flat
+    @marker = [{ lat: flat.latitude,
+                 lng: flat.longitude,
+                 info_window: render_to_string(partial: "info_window", locals: {flat: flat}),
+                 marker_html: render_to_string(partial: "markershow") }]
   end
 
   def new
@@ -68,6 +69,6 @@ class FlatsController < ApplicationController
   end
 
   def params_flat
-    params.require(:flat).permit(:name, :address, :description, :price_per_night, :number_of_guests)
+    params.require(:flat).permit(:name, :address, :description, :price_per_night, :number_of_guests, photos: [])
   end
 end
