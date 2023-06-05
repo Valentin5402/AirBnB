@@ -19,14 +19,14 @@
           <%= link_to "Accepter", accept_booking_path(booking), data: {"turbo-method": :patch}, class: "btn btn-success" %>
           <%= link_to "Refuser", refuse_booking_path(booking), data: {"turbo-method": :patch}, class: "btn btn-danger" %>
         <% end %>
-    <% if booking.flat.user != current_user && !booking.reviews.exists? && booking.confirmation == "accepted" && booking.end_date <= Date.today %>
-      <%= simple_form_for ([booking, @review]) do |f| %>
-      <%= f.hidden_field :booking_id, value: booking.id %>
-      <%= f.input :comment %>
-      <%= f.input :rating %>
-      <%= f.button :submit%>
-      <% end %>
-    <% end %>
+        <% if booking.flat.user != current_user && !booking.reviews.exists? && booking.confirmation == "accepted" && booking.end_date <= Date.today %>
+          <%= simple_form_for ([booking, @review]) do |f| %>
+          <%= f.hidden_field :booking_id, value: booking.id %>
+          <%= f.input :comment %>
+          <%= f.input :rating %>
+          <%= f.button :submit%>
+          <% end %>
+        <% end %>
       </div>
 
     </div>
