@@ -5,8 +5,17 @@
   margin: 16px;
 }
 
-.card {
-  border-radius: 10px;
+.card-flat {
+  border-radius: $border-radius-card;
+  border: solid white 1px;
+  overflow: hidden;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.card-flat > img {
+  height: 70%;
+  width: 100%;
+  object-fit: cover;
 }
 
 .card-details {
