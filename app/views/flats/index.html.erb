@@ -3,7 +3,10 @@
 <div class="main-container">
   <div class="cards">
     <% @flats.each do |flat| %>
-      <div class="card">
+      <div class="card-flat">
+        <% if !flat.photos.empty? %>
+          <%= cl_image_tag flat.photos[0].key %>
+        <% end %>
         <%= link_to flat.name, flat_path(flat) %>
         <%= link_to 'Edit', edit_flat_path(flat) %>
         <%= link_to "Delete",
