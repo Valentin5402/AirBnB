@@ -24,7 +24,7 @@
       </div>
     <% end %>
 
-    <% if !@bookings_as_owner.size.zero? %><hr><% end %>
+    <% if !@bookings_as_owner.size.zero? && !@bookings_as_tenant.size.zero? %><hr><% end %>
 
     <% @bookings_as_tenant.each do |booking| %>
       <div class="col-md-4 mt-3 d-flex align-items-stretch mt-4">
