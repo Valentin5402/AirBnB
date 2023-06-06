@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   # root "articles#index"
   resources :flats do
     resources :bookings, only: [:new, :create]
-    resources :reviews, only: [:index]
+    resources :reviews, only: [:index, :create]
   end
 
   resources :bookings, only: [:index, :show, :destroy] do

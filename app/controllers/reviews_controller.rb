@@ -13,13 +13,14 @@ class ReviewsController < ApplicationController
 
   def create
     @review = Review.new(review_params)
-    authorize @review
     @review.user = current_user
+    @review.booking_id = 1 # ATTENTION A CORRIGER
+    authorize @review
     if @review.save
-      redirect_to bookings_path
+      redirect_to flats_path
     else
-      @bookings = policy_scope(Booking.where(user_id: current_user.id))
-      render 'bookings/index', status: :unprocessable_entity
+      # @bookings = policy_scope(Booking.where(user_id: current_user.id))
+      # render 'bookings/index', status: :unprocessable_entity
     end
   end
 

@@ -182,6 +182,14 @@
         <p>Ce logement n'a pas encore de commentaire</p>
       <% end %>
     </div>
+    <%# Test pour autoriser uniquement ceux qui ont réservé l'appartement %>
+    <% if !Booking.where(user: current_user, flat: @flat).size.zero? %>
+      <%= simple_form_for [@flat, @review] do |f| %>
+        <%= f.input :comment, label: 'Votre commentaire' %>
+        <%= f.input :rating, label: 'Votre note' %>
+        <%= f.button :submit, class: "btn btn-primary" %>
+      <% end %>
+    <% end %>
 
   <%# <h4>**********  Place pour mettre les avis  **********</h4> %>
     <% @flat.reviews.each do |review| %>

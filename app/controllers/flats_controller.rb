@@ -17,6 +17,7 @@ class FlatsController < ApplicationController
   end
 
   def show
+    @review = Review.new
     @bookings = Booking.all
     # Je veux afficher mes réservations si je suis sur la page de l'appartement de quelqu'un d'autre
     # Seulement pour celui qui a réservé
