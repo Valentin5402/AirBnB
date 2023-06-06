@@ -24,18 +24,12 @@ class BookingsController < ApplicationController
     @booking = Booking.new(booking_params)
     @booking.user = current_user
     @booking.flat = @flat
-    @check = check_available
     # raise
     @booking.confirmation = "pending"
     authorize @booking
-    if !@check
-      if @booking.save
-        redirect_to flat_path(@flat)
-      else
-        render :new, status: :unprocessable_entity
-      end
+    if @booking.save
+      redirect_to flat_path(@flat)
     else
-      flash[:notice] = "Vous ne pouvez pas réserver cet appartement pendant ces temps."
       render :new, status: :unprocessable_entity
     end
   end
@@ -56,23 +50,23 @@ class BookingsController < ApplicationController
 
   private
 
-  def check_available
-    check = false
-    @reservations = Booking.where(flat: @flat, confirmation: "accepted")
-    listReservation = Array.new
-    @reservations.each do |reservation|
-      listReservation << [reservation.start_date, reservation.end_date]
-    end
-    # listReservation.sort_by! { |arr| arr.first }
-    @check = false
-    listReservation.each do |reservation|
-      if (@booking.start_date >= reservation[0] && @booking.start_date < reservation[1]) || (@booking.end_date >= reservation[0] && @booking.end_date < reservation[1]) || (@booking.start_date <= reservation[0] && @booking.end_date >=reservation[1] )
-        check = true
-        break
-      end
-    end
-    return check
-  end
+  # def check_available
+  #   check = false
+  #   @reservations = Booking.where(flat: @flat, confirmation: "accepted")
+  #   listReservation = Array.new
+  #   @reservations.each do |reservation|
+  #     listReservation << [reservation.start_date, reservation.end_date]
+  #   end
+  #   # listReservation.sort_by! { |arr| arr.first }
+  #   @check = false
+  #   listReservation.each do |reservation|
+  #     if (@booking.start_date >= reservation[0] && @booking.start_date < reservation[1]) || (@booking.end_date >= reservation[0] && @booking.end_date < reservation[1]) || (@booking.start_date <= reservation[0] && @booking.end_date >=reservation[1] )
+  #       check = true
+  #       break
+  #     end
+  #   end
+  #   return check
+  # end
 
   def booking_params
     params.require(:booking).permit(:start_date, :end_date)
