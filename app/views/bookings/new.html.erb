@@ -1,7 +1,10 @@
-<div class="container mt-4">
-  <%= simple_form_for [@flat, @booking] do |f| %>
-    <%= f.input :start_date, label: 'Date d\'arrivée' %>
-    <%= f.input :end_date, label: 'Date de départ' %>
-    <%= f.button :submit, class: "btn btn-primary" %>
-  <% end %>
-</div>
+
+  <div class="row justify-content-center mt-4">
+    <div class="col-3">
+      <%= simple_form_for [@flat, @booking] do |f| %>
+        <%= f.input :start_date, as: :date, html5: true, input_html: {value: Date.today}, label: 'Date d\'arrivée' %>
+        <%= f.input :end_date, as: :date, html5: true, input_html: {value: Date.today + 1}, label: 'Date de départ' %>
+        <%= f.button :submit, class: "btn btn-primary" %>
+      <% end %>
+    </div>
+  </div>
