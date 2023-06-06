@@ -4,34 +4,50 @@
 
   <div class="row">
 
-  <% @bookings.each do |booking| %>
-
-    <div class="col-md-4 mt-3 d-flex align-items-stretch">
-
-      <div class="card-details p-4">
-
-        <p>Flat: <%= booking.flat.name %></p>
-        <p>Adresse: <%= booking.flat.address %></p>
-        <p>Arrivée: <%= booking.start_date %></p>
-        <p>Départ: <%= booking.end_date %></p>
-        <p>Statut: <%= booking.confirmation %></p>
-        <% if booking.confirmation == "pending" && booking.flat.user == current_user %>
-          <%= link_to "Accepter", accept_booking_path(booking), data: {"turbo-method": :patch}, class: "btn btn-success" %>
-          <%= link_to "Refuser", refuse_booking_path(booking), data: {"turbo-method": :patch}, class: "btn btn-danger" %>
-        <% end %>
-        <% if booking.flat.user != current_user && !booking.reviews.exists? && booking.confirmation == "accepted" && booking.end_date <= Date.today %>
-          <%= simple_form_for ([booking, @review]) do |f| %>
-          <%= f.hidden_field :booking_id, value: booking.id %>
-          <%= f.input :comment %>
-          <%= f.input :rating %>
-          <%= f.button :submit%>
+    <% @bookings_as_owner.each do |booking| %>
+      <div class="col-md-4 mt-3 d-flex align-items-stretch">
+        <div class="card-details p-4">
+          <p class="fw-bold fs-5"><%= booking.flat.name %></p>
+          <p>Réservé par : <%= booking.user.firstName %> <%= booking.user.lastName %></p>
+          <p>Du <%= booking.start_date %> au <%= booking.end_date %></p>
+          <% if booking.confirmation == "pending" %>
+            <%= link_to "Accepter", accept_booking_path(booking), data: {"turbo-method": :patch}, class: "btn btn-success" %>
+            <%= link_to "Refuser", refuse_booking_path(booking), data: {"turbo-method": :patch}, class: "btn btn-danger" %>
+          <% elsif booking.confirmation == "accepted" %>
+            <p class="fw-bold text-success"><i class="fa-solid fa-check"></i> Acceptée</p>
+          <% else %>
+            <p class="fw-bold text-danger"><i class="fa-solid fa-xmark"></i> Refusée</p>
           <% end %>
-        <% end %>
+        </div>
       </div>
+    <% end %>
 
-    </div>
-  <% end %>
+    <hr>
 
+    <% @bookings_as_tenant.each do |booking| %>
+      <div class="col-md-4 mt-3 d-flex align-items-stretch mt-4">
+        <div class="card-details p-4">
+          <p class="fw-bold fs-5"><%= booking.flat.name %></p>
+          <p class="fst-italic"><%= booking.flat.address %></p>
+          <p>Du <%= booking.start_date %> au <%= booking.end_date %></p>
+          <% if booking.confirmation == "pending" %>
+            <p class="fw-bold text-warning"><i class="fa-solid fa-clock"></i> En attente d'acceptation</p>
+          <% elsif booking.confirmation == "refused" %>
+            <p class="fw-bold text-danger"><i class="fa-solid fa-xmark"></i> Refusée</p>
+          <% else %>
+            <p class="fw-bold text-success"><i class="fa-solid fa-check"></i> Acceptée</p>
+            <% if !booking.reviews.exists? && booking.end_date <= Date.today %>
+                <%= simple_form_for ([booking, @review]) do |f| %>
+                <%= f.hidden_field :booking_id, value: booking.id %>
+                <%= f.input :comment, label: "Commentaire" %>
+                <%= f.input :rating, label: "Note /5" %>
+                <%= f.button :submit, class:"btn btn-primary" %>
+              <% end %>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
 
-    </div>
+  </div>
 </div>

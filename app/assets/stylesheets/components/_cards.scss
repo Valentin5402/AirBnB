@@ -1,8 +1,8 @@
 .cards {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 16px;
-  margin: 16px;
+  margin: 32px;
 }
 
 .card-flat {
@@ -13,6 +13,7 @@
 }
 
 .card-flat > img {
+  border-radius: $border-radius-card;
   height: 70%;
   width: 100%;
   object-fit: cover;

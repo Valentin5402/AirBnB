@@ -17,163 +17,190 @@
     <p><%= @flat.address %></p>
   </div>
 
-  <% if !@flat.photos.empty? %>
-    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-      <ol class="carousel-indicators">
-        <% @flat.photos.each_with_index do |photo, index| %>
-          <li data-target="#carouselExampleIndicators" data-slide-to="<%= index %>" <% if index == 0 %>class="active"<% end %>></li>
-        <% end %>
-      </ol>
-      <div class="carousel-inner">
-        <% @flat.photos.each_with_index do |photo, index| %>
-          <div class="carousel-item <% if index == 0 %>active<% end %>">
-            <%= cl_image_tag photo.key, class: "d-block w-100", height: 600, crop: :pad %>
+  <div class="row mt-4">
+
+    <div class="col-md-8">
+
+      <% if !@flat.photos.empty? %>
+          <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+            <ol class="carousel-indicators">
+              <% @flat.photos.each_with_index do |photo, index| %>
+                <li data-target="#carouselExampleIndicators" data-slide-to="<%= index %>" <% if index == 0 %>class="active"<% end %>></li>
+              <% end %>
+            </ol>
+            <div class="carousel-inner">
+              <% @flat.photos.each_with_index do |photo, index| %>
+                <div class="carousel-item <% if index == 0 %>active<% end %>">
+                  <%= cl_image_tag photo.key, class: "d-block w-60", height: 400, crop: :pad %>
+                </div>
+              <% end %>d
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="sr-only">Next</span>
+            </a>
           </div>
         <% end %>
-      </div>
-      <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-      </a>
-      <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-      </a>
-    </div>
-  <% end %>
 
-<div class="row mt-4">
-
-  <div class="col-md-8">
-    <div class="border-bottom">
-      <h3>Logement entier : chez <%= @flat.user.firstName %></h3>
-      <p>
-        <% if @flat.number_of_guests == 1 %>
-          <%= @flat.number_of_guests %> voyageur</p>
-        <% else %>
-          <%= @flat.number_of_guests %> voyageurs</p>
-        <% end %>
-    </div>
-    <div class="border-bottom mt-4">
-
-    <% if @average_rating && @average_rating >= 4 %>
-      <div class="d-flex flex-row">
-        <div>
-          <p><i class="fa-solid fa-medal fa-2x"></i></p>
-        </div>
-
-        <div class="mx-2">
-          <div>
-            <p class="text-bold my-0"><%= @flat.user.firstName %> est Superhôte</p>
-          </div>
-          <div>
-            <p class="text-gray text-14">Les Superhôtes sont des hôtes qui bénéficient de très bonnes évaluations.</p>
-          </div>
-        </div>
-      </div>
-    <% end  %>
-
-
-      <div class="d-flex flex-row align-items-center">
-        <div>
-          <p><i class="fa-sharp fa-solid fa-calendar fa-2x"></i></p>
-        </div>
-
-        <div class="mx-2">
-          <div>
-            <p class="text-bold">Annulation gratuite jusqu'à une semaine avant votre arrivée</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="py-4">
-      <h4>Description</h4>
-      <%= @flat.description %>
-    </div>
-  </div>
-
-  <div class="col-md-4">
-    <div class="card-details">
-      <div class="d-flex justify-content-between align-items-center">
-        <div class="d-inline-flex align-items-center">
-          <p class="text-bold text-24 m-0"><%= @flat.price_per_night %>€</p>
-          <p class="my-0 mx-2">par nuit</p>
-        </div>
-
-        <div class="d-inline-flex align-items-center">
-          <% if @average_rating %>
-            <p class="m-0"><i class="fa-solid fa-star"></i> <%= number_with_precision(@average_rating, precision: 2) %></p>
-          <p class="mx-2 m-0">·</p>
+      <div class="border-bottom mt-2">
+        <h3>Logement entier : chez <%= @flat.user.firstName %></h3>
+        <p>
+          <% if @flat.number_of_guests == 1 %>
+            <%= @flat.number_of_guests %> voyageur</p>
+          <% else %>
+            <%= @flat.number_of_guests %> voyageurs</p>
           <% end %>
-          <p>
-            <% if @number_of_reviews <= 1 %>
-              <p class="m-0 text-gray"><%= @number_of_reviews %> commentaire</p>
-            <% else %>
-              <p class="m-0 text-gray"><%= @number_of_reviews %> commentaires</p>
-            <% end %>
-          </p>
+      </div>
+
+      <div class="border-bottom mt-4">
+        <% if @average_rating && @average_rating >= 4 %>
+          <div class="d-flex flex-row">
+            <div>
+              <p><i class="fa-solid fa-medal fa-2x"></i></p>
+            </div>
+            <div class="mx-2">
+              <div>
+                <p class="text-bold my-0"><%= @flat.user.firstName %> est Superhôte</p>
+              </div>
+              <div>
+                <p class="text-gray text-14">Les Superhôtes sont des hôtes qui bénéficient de très bonnes évaluations.</p>
+              </div>
+            </div>
+          </div>
+        <% end %>
+
+        <div class="d-flex flex-row align-items-center">
+          <div>
+            <p><i class="fa-sharp fa-solid fa-calendar fa-2x"></i></p>
+          </div>
+
+          <div class="mx-2">
+            <div>
+              <p class="text-bold">Annulation gratuite jusqu'à une semaine avant votre arrivée</p>
+            </div>
+          </div>
         </div>
       </div>
-      <% if @flat.user != current_user %>
-        <%= link_to "Book this flat", new_flat_booking_path(@flat), class: "btn btn-primary my-3 w-100" %>
-      <% end %>
-      <p class="text-center text-gray my-0 text-14">Aucun montant ne vous sera débité pour le moment</p>
+
+      <div class="py-4">
+        <h4>Description</h4>
+        <%= @flat.description %>
+      </div>
     </div>
 
-    <% if @flat.bookings.size >= 1 %>
-    <div class="card-details my-4">
-      <p class="text-center mt-3"><i class="fa-regular fa-gem fa-2xl" style="color: #ff2600;"></i></p>
-      <% if @flat.bookings.size == 1 %>
-        <p class="text-center m-0">C'est une perle rare ! Il y a déjà eu <%= @flat.bookings.size %> réservation pour ce logement</p>
-      <% else %>
-        <p class="text-center m-0">C'est une perle rare ! Il y a déjà eu <%= @flat.bookings.size %> réservations pour ce logement</p>
+    <div class="col-md-4">
+
+      <% if !@my_bookings_of_this_flat.empty? %>
+        <div class="card-details mb-4">
+          <% @my_bookings_of_this_flat.each do |booking| %>
+            <% if booking.confirmation == "pending" %>
+              <p class="fw-bold text-warning"><i class="fa-solid fa-clock"></i> Réservation en attente du <%= booking.start_date %> au <%= booking.end_date %></p>
+            <% elsif booking.confirmation == "accepted" %>
+              <p class="fw-bold text-success"><i class="fa-solid fa-check"></i> Réservé du <%= booking.start_date %> au <%= booking.end_date %></p>
+            <% else %>
+              <p class="fw-bold text-danger"><i class="fa-solid fa-xmark"></i> Réservation refusée par l'hôte !</p>
+            <% end %>
+          <% end %>
+        </div>
+      <% end %>
+
+      <% if !@other_bookings_for_my_flat.empty? %>
+        <div class="card-details mb-4">
+          <p class="fw-bold text-24">Réservations</p>
+          <% @other_bookings_for_my_flat.each do |booking| %>
+            <p><%= booking.start_date %> au <%= booking.end_date %> : <%= booking.user.firstName %> <%= booking.user.lastName %></p>
+            <div class="m-0">
+            <% if booking.confirmation == "pending" %>
+              <%= link_to "Accepter", accept_booking_path(booking), data: {"turbo-method": :patch}, class: "btn btn-success btn-sm" %>
+              <%= link_to "Refuser", refuse_booking_path(booking), data: {"turbo-method": :patch}, class: "btn btn-danger btn-sm" %>
+            <% elsif booking.confirmation == "accepted" %>
+              <p class="fw-bold text-success"><i class="fa-solid fa-check"></i> Acceptée !</p>
+            <% else %>
+              <p class="fw-bold text-danger"><i class="fa-solid fa-xmark"></i> Refusée !</p>
+            <% end %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+
+      <div class="card-details">
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="d-inline-flex align-items-center">
+            <p class="text-bold text-24 m-0"><%= @flat.price_per_night %>€</p>
+            <p class="my-0 mx-2">par nuit</p>
+          </div>
+
+          <div class="d-inline-flex align-items-center">
+            <% if @average_rating %>
+              <p class="m-0"><i class="fa-solid fa-star"></i> <%= number_with_precision(@average_rating, precision: 2) %></p>
+              <p class="mx-2 m-0">·</p>
+            <% end %>
+            <p>
+              <% if @number_of_reviews <= 1 %>
+                <p class="m-0 text-gray"><%= @number_of_reviews %> commentaire</p>
+              <% else %>
+                <p class="m-0 text-gray"><%= @number_of_reviews %> commentaires</p>
+              <% end %>
+            </p>
+          </div>
+        </div>
+        <% if @flat.user != current_user %>
+          <%= link_to "Réserver cet appartement", new_flat_booking_path(@flat), class: "btn btn-primary my-3 w-100" %>
+        <% end %>
+        <p class="text-center text-gray my-0 text-14">Aucun montant ne vous sera débité pour le moment</p>
+      </div>
+
+      <% if @flat.bookings.size >= 1 %>
+        <div class="card-details my-4">
+          <p class="text-center mt-3"><i class="fa-regular fa-gem fa-2xl" style="color: #ff2600;"></i></p>
+          <% if @flat.bookings.size == 1 %>
+            <p class="text-center m-0">C'est une perle rare ! Il y a déjà eu <%= @flat.bookings.size %> réservation pour ce logement</p>
+          <% else %>
+            <p class="text-center m-0">C'est une perle rare ! Il y a déjà eu <%= @flat.bookings.size %> réservations pour ce logement</p>
+          <% end %>
+        </div>
       <% end %>
     </div>
+
+  </div>
+
+  <div class="border-top py-5 mt-5">
+    <div class="d-inline-flex text-24">
+      <% if @average_rating %>
+        <p><i class="fa-solid fa-star"></i> <%= number_with_precision(@average_rating, precision: 2) %></p>
+        <p class="mx-2">·</p>
+        <% if @number_of_reviews == 1 %>
+          <p><%= @number_of_reviews %> commentaire</p>
+        <% else %>
+          <p><%= @number_of_reviews %> commentaires</p>
+        <% end %>
+      <% else %>
+        <p>Ce logement n'a pas encore de commentaire</p>
+      <% end %>
+    </div>
+
+  <%# <h4>**********  Place pour mettre les avis  **********</h4> %>
+    <% @flat.reviews.each do |review| %>
+      <ul class="list-group my-3">
+        <li class="list-group-item text-22">
+          <%= review.comment %>
+          <div class="text-gray my-0 text-14"> <%= review.created_at %></div>
+        </li>
+      </ul>
     <% end %>
   </div>
 
-</div>
 
-<div class="border-top py-5 mt-5">
-  <div class="d-inline-flex text-24">
-    <% if @average_rating %>
-      <p><i class="fa-solid fa-star"></i> <%= number_with_precision(@average_rating, precision: 2) %></p>
-      <p class="mx-2">·</p>
-      <% if @number_of_reviews == 1 %>
-        <p><%= @number_of_reviews %> commentaire</p>
-      <% else %>
-        <p><%= @number_of_reviews %> commentaires</p>
-      <% end %>
-    <% else %>
-      <p>Ce logement n'a pas encore de commentaire</p>
-    <% end %>
-
-
+  <div class="border-top py-5">
+  <h3>Où se situe le logement ?</h3>
+    <div class="mt-3" style="width: 100%; height: 500px;"
+        data-controller="map"
+        data-map-markers-value="<%= @marker.to_json %>"
+        data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>">
+    </div>
   </div>
-<h4>**********  Place pour mettre les avis  **********</h3>
-</div>
-
-
-<div class="border-top py-5">
-<h3>Où se situe le logement</h3>
- <div style="width: 100%; height: 600px;"
-    data-controller="map"
-    data-map-markers-value="<%= @marker.to_json %>"
-    data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>">
-  </div>
-</div>
-
-
-  <% @my_bookings_of_this_flat.each do |booking| %>
-    <p>Booking from <%= booking.start_date %> to <%= booking.end_date %></p>
-  <% end %>
-
-
-
-
-  <% @other_bookings_for_my_flat.each do |booking| %>
-    <p>Booking from <%= booking.start_date %> to <%= booking.end_date %> by <%= booking.user.lastName %> <%= booking.user.firstName %></p>
-  <% end %>
-
 </div>

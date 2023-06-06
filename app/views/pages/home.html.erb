@@ -1,12 +1,8 @@
-<div class="container">
-  <h1>Pages#home</h1>
-  <p>Find me in app/views/pages/home.html.erb</p>
+<div class="container mt-4">
   <% if user_signed_in? %>
-    <p>Hello <%= current_user.email %></p>
+    <h2>Bienvenue <%= current_user.firstName %> !</h2>
   <% else %>
-    <p>You are not logged in</p>
+    <p>Vous n'êtes pas connecté</p>
   <% end %>
-  <p class="notice"><%= notice %></p>
-  <p class="alert"><%= alert %></p>
-  <%= link_to 'See all flats', flats_path %>
+  <%= link_to 'Voir les appartements', flats_path, class: "btn btn-primary" %>
 </div>

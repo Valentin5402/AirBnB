@@ -1,3 +1,5 @@
+require 'date'
+
 class FlatsController < ApplicationController
   skip_before_action :authenticate_user!, only: :index
   before_action :set_flat, only: [:show, :edit, :update, :destroy]
@@ -18,10 +20,11 @@ class FlatsController < ApplicationController
     @bookings = Booking.all
     # Je veux afficher mes réservations si je suis sur la page de l'appartement de quelqu'un d'autre
     # Seulement pour celui qui a réservé
-    @my_bookings_of_this_flat = @bookings.select { |booking| booking.user == current_user && booking.flat == @flat }
+    @my_bookings_of_this_flat = @bookings.order(:start_date).select { |booking| booking.user == current_user && booking.flat == @flat }
     # Je veux afficher les réservations d'autres personnes de mon appartement si je suis sur la page de mon appartement
     # Seulement pour le propriétaire de l'appartement
-    @other_bookings_for_my_flat = @bookings.select { |booking| @flat.user == current_user && booking.flat == @flat }
+    @other_bookings_for_my_flat = @bookings.order(:start_date).select { |booking| @flat.user == current_user && booking.flat == @flat }
+    @past_bookings = @my_bookings_of_this_flat.select { |booking| booking.end_date >= Date.today }
     @reviews = @flat.reviews
     @number_of_reviews = @reviews.size
     @average_rating = @reviews.average(:rating)

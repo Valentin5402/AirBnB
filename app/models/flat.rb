@@ -1,5 +1,5 @@
 class Flat < ApplicationRecord
-  validates :name, presence: true
+  validates :name, presence: true, length: { maximum: 40, too_long: '%{count} characters is the maximum allowed' }
   validates :address, presence: true
   validates :description, presence: true
   validates :price_per_night, numericality: { greater_than: 0 }
