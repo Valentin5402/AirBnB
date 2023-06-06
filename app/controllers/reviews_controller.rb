@@ -17,8 +17,9 @@ class ReviewsController < ApplicationController
     @review.booking_id = 1 # ATTENTION A CORRIGER
     authorize @review
     if @review.save
-      redirect_to flats_path
-    else
+      redirect_to flat_path(params['flat_id'])
+    else # ATTENTION A CORRIGER
+      # render 'flats/show', status: :unprocessable_entity
       # @bookings = policy_scope(Booking.where(user_id: current_user.id))
       # render 'bookings/index', status: :unprocessable_entity
     end
