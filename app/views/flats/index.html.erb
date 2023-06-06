@@ -40,15 +40,15 @@
                 </div>
               <% end %>
 
-              <div class="card-body text-center px-2">
+              <div class="card-body px-3">
                 <div class="card-title">
                   <%= link_to flat.name, flat_path(flat), class: "text-decoration-none text-bold link-dark" %>
                 </div>
                 <div class="card-text text-gray pt-1">
                   <% if flat.description.length > 70 %>
-                    <p><%= flat.description[0..70] %>...</p>
+                    <p class="mb-0"><%= flat.description[0..70] %>...</p>
                   <% else %>
-                    <p><%= flat.description[0..70] %></p>
+                    <p class="mb-0"><%= flat.description[0..70] %></p>
                   <% end %>
                 </div>
               </div>
