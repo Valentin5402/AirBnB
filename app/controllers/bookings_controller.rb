@@ -37,6 +37,7 @@ class BookingsController < ApplicationController
     @booking = Booking.find(params[:id])
     @booking.update(confirmation: "accepted")
     authorize @booking
+    # ! En fonction de la page sur laquelle l'utilisateur se trouve, rediriger vers le bon chemin (comment faire ?)
     redirect_to bookings_path, notice: "La réservation a bien été acceptée."
   end
 
@@ -44,6 +45,7 @@ class BookingsController < ApplicationController
     @booking = Booking.find(params[:id])
     @booking.update(confirmation: "refused")
     authorize @booking
+    # ! En fonction de la page sur laquelle l'utilisateur se trouve, rediriger vers le bon chemin (comment faire ?)
     redirect_to bookings_path, notice: "La réservation a été refusée !"
   end
 

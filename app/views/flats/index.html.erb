@@ -1,14 +1,14 @@
-  <div class="container mt-4">
+<div class="container mt-4">
 
-  <h1>Tous nos logements (<%= @flats.size %>)</h1>
+<h1>Tous nos logements <small>(<%= @flats.size %>)</small></h1>
 
-  <%= link_to 'Ajouter un appartement', new_flat_path, class: "btn btn-info" %>
+<%= link_to 'Ajouter un appartement', new_flat_path, class: "btn btn-info" %>
 
-    <div class="row">
+  <div class="row">
 
-      <div class="col-md-8">
+    <div class="col-md-8">
 
-        <div class="d-flex align-items-stretch">
+      <div class="d-flex align-items-stretch">
         <div class="cards">
           <% @flats.each do |flat| %>
             <div class="card card-flat">
@@ -48,7 +48,7 @@
                   <% if flat.description.length > 70 %>
                     <p class="mb-0 text-12"><%= flat.description[0..70] %>...</p>
                   <% else %>
-                    <p class="mb-0 text-12"><%= flat.description[0..70] %></p>
+                    <p class="mb-0 text-12"><%= flat.description %></p>
                   <% end %>
                 </div>
               </div>
@@ -62,7 +62,7 @@
                   <%= link_to "<i class='fa-solid fa-trash-can' style='color: #ff2600;'></i>".html_safe,
                     flat_path(flat),
                     class: "text-decoration-none link-dark",
-                    data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}
+                    data: {turbo_method: :delete, turbo_confirm: "Confirmer la suppression ?"}
                   %>
                 </div>
               <% end %>
@@ -70,17 +70,15 @@
             </div>
           <% end %>
         </div>
-
-
-        </div>
       </div>
+    </div>
 
-      <div class="col-md-4">
-        <div style="width: 100%; height: 600px; position:sticky; top: 0;"
-            data-controller="map"
-            data-map-markers-value="<%= @markers.to_json %>"
-            data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>">
-        </div>
+    <div class="col-md-4">
+      <div style="width: 100%; height: 600px; position:sticky; top: 0;"
+          data-controller="map"
+          data-map-markers-value="<%= @markers.to_json %>"
+          data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>">
       </div>
     </div>
   </div>
+</div>

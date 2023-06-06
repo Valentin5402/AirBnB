@@ -3,6 +3,7 @@
   <p>
     <% if @flat.user == current_user %>
       <%= link_to "Mettre à jour les informations", edit_flat_path(@flat), class: "btn btn-info" %>
+      <%= link_to "Supprimer ce logement", flat_path(@flat), class: "btn btn-danger", data: {turbo_method: :delete, turbo_confirm: "Confirmer la suppression ?"} %>
     <% end %>
   </p>
   <div class="d-inline-flex">
@@ -48,12 +49,7 @@
 
       <div class="border-bottom mt-2">
         <h3>Logement entier : chez <%= @flat.user.firstName %></h3>
-        <p>
-          <% if @flat.number_of_guests == 1 %>
-            <%= @flat.number_of_guests %> voyageur</p>
-          <% else %>
-            <%= @flat.number_of_guests %> voyageurs</p>
-          <% end %>
+        <p><%= pluralize @flat.number_of_guests, "voyageur" %> </p>
       </div>
 
       <div class="border-bottom mt-4">
@@ -88,7 +84,7 @@
 
       <div class="py-4">
         <h4>Description</h4>
-        <%= @flat.description %>
+        <p><%= @flat.description %></p>
       </div>
     </div>
 
@@ -110,20 +106,22 @@
 
       <% if !@other_bookings_for_my_flat.empty? %>
         <div class="card-details mb-4">
-          <p class="fw-bold text-24">Réservations</p>
-          <% @other_bookings_for_my_flat.each do |booking| %>
-            <p><%= booking.start_date %> au <%= booking.end_date %> : <%= booking.user.firstName %> <%= booking.user.lastName %></p>
-            <div class="m-0">
-            <% if booking.confirmation == "pending" %>
-              <%= link_to "Accepter", accept_booking_path(booking), data: {"turbo-method": :patch}, class: "btn btn-success btn-sm" %>
-              <%= link_to "Refuser", refuse_booking_path(booking), data: {"turbo-method": :patch}, class: "btn btn-danger btn-sm" %>
-            <% elsif booking.confirmation == "accepted" %>
-              <p class="fw-bold text-success"><i class="fa-solid fa-check"></i> Acceptée !</p>
-            <% else %>
-              <p class="fw-bold text-danger"><i class="fa-solid fa-xmark"></i> Refusée !</p>
+          <%= link_to "Réservations", bookings_path, class: "text-decoration-none text-24 text-black fw-bold" %>
+          <div class="mt-3">
+            <% @other_bookings_for_my_flat.each do |booking| %>
+              <p><%= booking.start_date %> au <%= booking.end_date %> : <%= booking.user.firstName %> <%= booking.user.lastName %></p>
+              <div class="m-0">
+              <% if booking.confirmation == "pending" %>
+                <%= link_to "Accepter", accept_booking_path(booking), data: {"turbo-method": :patch}, class: "btn btn-success btn-sm" %>
+                <%= link_to "Refuser", refuse_booking_path(booking), data: {"turbo-method": :patch}, class: "btn btn-danger btn-sm" %>
+              <% elsif booking.confirmation == "accepted" %>
+                <p class="fw-bold text-success"><i class="fa-solid fa-check"></i> Acceptée !</p>
+              <% else %>
+                <p class="fw-bold text-danger"><i class="fa-solid fa-xmark"></i> Refusée !</p>
+              <% end %>
+              </div>
             <% end %>
-            </div>
-          <% end %>
+          </div>
         </div>
       <% end %>
 
@@ -139,13 +137,7 @@
               <p class="m-0"><i class="fa-solid fa-star"></i> <%= number_with_precision(@average_rating, precision: 2) %></p>
               <p class="mx-2 m-0">·</p>
             <% end %>
-            <p>
-              <% if @number_of_reviews <= 1 %>
-                <p class="m-0 text-gray"><%= @number_of_reviews %> commentaire</p>
-              <% else %>
-                <p class="m-0 text-gray"><%= @number_of_reviews %> commentaires</p>
-              <% end %>
-            </p>
+            <p class="m-0 text-gray"><%= pluralize @number_of_reviews, "commentaire" %></p>
           </div>
         </div>
         <% if @flat.user != current_user %>
@@ -157,11 +149,7 @@
       <% if @flat.bookings.size >= 1 %>
         <div class="card-details my-4">
           <p class="text-center mt-3"><i class="fa-regular fa-gem fa-2xl" style="color: #ff2600;"></i></p>
-          <% if @flat.bookings.size == 1 %>
-            <p class="text-center m-0">C'est une perle rare ! Il y a déjà eu <%= @flat.bookings.size %> réservation pour ce logement</p>
-          <% else %>
-            <p class="text-center m-0">C'est une perle rare ! Il y a déjà eu <%= @flat.bookings.size %> réservations pour ce logement</p>
-          <% end %>
+          <p class="text-center m-0">C'est une perle rare ! Il y a déjà eu <%= pluralize @flat.bookings.size, "réservation" %> pour ce logement</p>
         </div>
       <% end %>
     </div>
@@ -173,25 +161,19 @@
       <% if @average_rating %>
         <p><i class="fa-solid fa-star"></i> <%= number_with_precision(@average_rating, precision: 2) %></p>
         <p class="mx-2">·</p>
-        <% if @number_of_reviews == 1 %>
-          <p><%= @number_of_reviews %> commentaire</p>
-        <% else %>
-          <p><%= @number_of_reviews %> commentaires</p>
-        <% end %>
-      <% else %>
-        <p>Ce logement n'a pas encore de commentaire</p>
+        <p><%= pluralize @number_of_reviews, "commentaire" %></p>
       <% end %>
     </div>
+
     <%# Test pour autoriser uniquement ceux qui ont réservé l'appartement %>
     <% if !Booking.where(user: current_user, flat: @flat).size.zero? %>
       <%= simple_form_for [@flat, @review] do |f| %>
-        <%= f.input :comment, label: 'Votre commentaire' %>
-        <%= f.input :rating, label: 'Votre note' %>
-        <%= f.button :submit, class: "btn btn-primary" %>
+        <%= f.input :comment, label: "Commentaire" %>
+        <%= f.input :rating, label: "Note /5" %>
+        <%= f.button :submit, label: "Soumettre", class: "btn btn-primary" %>
       <% end %>
     <% end %>
 
-  <%# <h4>**********  Place pour mettre les avis  **********</h4> %>
     <% @flat.reviews.each do |review| %>
       <ul class="list-group my-3">
         <li class="list-group-item text-22">
@@ -201,7 +183,6 @@
       </ul>
     <% end %>
   </div>
-
 
   <div class="border-top py-5">
   <h3>Où se situe le logement ?</h3>

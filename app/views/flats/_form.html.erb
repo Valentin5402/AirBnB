@@ -4,6 +4,7 @@
     <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
     <%= f.input :name, label: 'Nom de l\'appartement' %>
     <%= f.input :address,
+        label: "Adresse",
         input_html: {data: {address_autocomplete_target: "address"}, class: "d-none"},
         wrapper_html: {data: {controller: "address-autocomplete",
         address_autocomplete_api_key_value: ENV["MAPBOX_API_KEY"]}}
@@ -12,5 +13,5 @@
     <%= f.input :price_per_night, label: 'Prix par nuit' %>
     <%= f.input :number_of_guests, label: 'Nombre d\'hôtes max' %>
     <%= f.input :photos, as: :file, input_html: { multiple: true } %>
-    <%= f.submit %>
+    <%= f.submit class: "btn btn-primary" %>
   <% end %>
