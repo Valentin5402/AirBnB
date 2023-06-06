@@ -2,6 +2,8 @@
 
   <h1>Mes réservations</h1>
 
+  <hr>
+
   <div class="row">
 
     <% @bookings_as_owner.each do |booking| %>
@@ -22,7 +24,7 @@
       </div>
     <% end %>
 
-    <hr>
+    <% if !@bookings_as_owner.size.zero? %><hr><% end %>
 
     <% @bookings_as_tenant.each do |booking| %>
       <div class="col-md-4 mt-3 d-flex align-items-stretch mt-4">
