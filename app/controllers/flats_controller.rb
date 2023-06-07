@@ -33,6 +33,7 @@ class FlatsController < ApplicationController
                  lng: @flat.longitude,
                  info_window: render_to_string(partial: "info_window", locals: { flat: @flat }),
                  marker_html: render_to_string(partial: "marker", locals: { flat: @flat }) }]
+    @booking = Booking.new
   end
 
   def new

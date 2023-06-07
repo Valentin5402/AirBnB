@@ -30,7 +30,9 @@ class BookingsController < ApplicationController
     if @booking.save
       redirect_to flat_path(@flat)
     else
-      render :new, status: :unprocessable_entity
+      respond_to do |format|
+        format.text { render partial: "bookings/form", locals: {flat: @flat, booking: @booking}, formats: [:html] }
+      end
     end
   end
 
