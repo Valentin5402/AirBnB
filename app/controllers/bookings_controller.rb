@@ -24,6 +24,7 @@ class BookingsController < ApplicationController
     @booking = Booking.new(booking_params)
     @booking.user = current_user
     @booking.flat = @flat
+    # raise
     @booking.confirmation = "pending"
     authorize @booking
     if @booking.save
@@ -35,10 +36,15 @@ class BookingsController < ApplicationController
 
   def accept
     @booking = Booking.find(params[:id])
-    @booking.update(confirmation: "accepted")
     authorize @booking
-    # ! En fonction de la page sur laquelle l'utilisateur se trouve, rediriger vers le bon chemin (comment faire ?)
-    redirect_to bookings_path, notice: "La réservation a bien été acceptée."
+    check = check_available(@booking)
+    # raise
+    if !check
+      @booking.update(confirmation: "accepted")
+      redirect_to bookings_path, notice: "La réservation a bien été acceptée."
+    else
+      redirect_to bookings_path, notice: "Votre appartement est déja réservé pendant ces temps"
+    end
   end
 
   def refuse
@@ -50,6 +56,23 @@ class BookingsController < ApplicationController
   end
 
   private
+
+  def check_available(booking)
+    check = false
+    reservations = Booking.where(flat: booking.flat, confirmation: "accepted")
+    listReservation = Array.new
+    reservations.each do |reservation|
+      listReservation << [reservation.start_date, reservation.end_date]
+    end
+    listReservation.each do |reservation|
+      if (booking.start_date >= reservation[0] && booking.start_date < reservation[1]) || (booking.end_date >= reservation[0] && booking.end_date < reservation[1]) || (booking.start_date <= reservation[0] && booking.end_date >=reservation[1] )
+        check = true
+        break
+      end
+    end
+    # raise
+    return check
+  end
 
   def booking_params
     params.require(:booking).permit(:start_date, :end_date)
