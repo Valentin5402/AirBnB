@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_04_092305) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_07_193406) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -52,6 +52,22 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_04_092305) do
     t.datetime "updated_at", null: false
     t.index ["flat_id"], name: "index_bookings_on_flat_id"
     t.index ["user_id"], name: "index_bookings_on_user_id"
+  end
+
+  create_table "equipment", force: :cascade do |t|
+    t.string "name"
+    t.string "fontawesome_html"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "flat_equipments", force: :cascade do |t|
+    t.bigint "flat_id", null: false
+    t.bigint "equipment_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["equipment_id"], name: "index_flat_equipments_on_equipment_id"
+    t.index ["flat_id"], name: "index_flat_equipments_on_flat_id"
   end
 
   create_table "flats", force: :cascade do |t|
@@ -97,6 +113,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_04_092305) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "bookings", "flats"
   add_foreign_key "bookings", "users"
+  add_foreign_key "flat_equipments", "equipment"
+  add_foreign_key "flat_equipments", "flats"
   add_foreign_key "flats", "users"
   add_foreign_key "reviews", "bookings"
   add_foreign_key "reviews", "users"

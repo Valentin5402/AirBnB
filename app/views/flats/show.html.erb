@@ -82,10 +82,27 @@
         </div>
       </div>
 
-      <div class="py-4">
+      <div class="py-4 border-bottom mb-4">
         <h4>Description</h4>
+        <br>
         <p><%= @flat.description %></p>
       </div>
+
+      <div class="">
+
+        <h4>Ce que propose ce logement</h4>
+        <br>
+        <ul class="list-unstyled">
+          <li>
+            <% @flat.equipments.each do |equipment| %>
+              <%= equipment.fontawesome_html.html_safe %>
+              <%= equipment.name %>
+              <br><br>
+          </li>
+            <% end %>
+        </ul>
+      </div>
+
     </div>
 
     <div class="col-md-4">
@@ -157,7 +174,7 @@
 
   </div>
 
-  <div class="border-top py-5 mt-5">
+  <div class="border-top py-5 mt-2">
     <div class="d-inline-flex text-24">
       <% if @average_rating %>
         <p><i class="fa-solid fa-star"></i> <%= number_with_precision(@average_rating, precision: 2) %></p>
