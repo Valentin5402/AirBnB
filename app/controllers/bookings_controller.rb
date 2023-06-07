@@ -45,8 +45,6 @@ class BookingsController < ApplicationController
     else
       redirect_to bookings_path, notice: "Votre appartement est déja réservé pendant ces temps"
     end
-    # ! En fonction de la page sur laquelle l'utilisateur se trouve, rediriger vers le bon chemin (comment faire ?)
-    redirect_to bookings_path, notice: "La réservation a bien été acceptée."
   end
 
   def refuse
