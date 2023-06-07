@@ -2,7 +2,7 @@
   <h1><%= @flat.name %></h1>
   <p>
     <% if @flat.user == current_user %>
-      <%= link_to "Mettre à jour les informations", edit_flat_path(@flat), class: "btn btn-info" %>
+      <%= link_to "Mettre à jour les informations", edit_flat_path(@flat), class: "btn btn-info me-3" %>
       <%= link_to "Supprimer ce logement", flat_path(@flat), class: "btn btn-danger", data: {turbo_method: :delete, turbo_confirm: "Confirmer la suppression ?"} %>
     <% end %>
   </p>
@@ -92,15 +92,18 @@
 
       <% if !@my_bookings_of_this_flat.empty? %>
         <div class="card-details mb-4">
-          <% @my_bookings_of_this_flat.each do |booking| %>
-            <% if booking.confirmation == "pending" %>
-              <p class="fw-bold text-warning"><i class="fa-solid fa-clock"></i> Réservation en attente du <%= booking.start_date %> au <%= booking.end_date %></p>
-            <% elsif booking.confirmation == "accepted" %>
-              <p class="fw-bold text-success"><i class="fa-solid fa-check"></i> Réservé du <%= booking.start_date %> au <%= booking.end_date %></p>
-            <% else %>
-              <p class="fw-bold text-danger"><i class="fa-solid fa-xmark"></i> Réservation refusée par l'hôte !</p>
+          <%= link_to "Réservations", bookings_path, class: "text-decoration-none text-24 text-black fw-bold" %>
+          <div class="mt-3">
+            <% @my_bookings_of_this_flat.each do |booking| %>
+              <% if booking.confirmation == "pending" %>
+                <p class="fw-bold text-warning"><i class="fa-solid fa-clock"></i> Réservation en attente du <%= booking.start_date %> au <%= booking.end_date %></p>
+              <% elsif booking.confirmation == "accepted" %>
+                <p class="fw-bold text-success"><i class="fa-solid fa-check"></i> Réservé du <%= booking.start_date %> au <%= booking.end_date %></p>
+              <% else %>
+                <p class="fw-bold text-danger"><i class="fa-solid fa-xmark"></i> Réservation refusée par l'hôte !</p>
+              <% end %>
             <% end %>
-          <% end %>
+          </div>
         </div>
       <% end %>
 
@@ -110,7 +113,6 @@
           <div class="mt-3">
             <% @other_bookings_for_my_flat.each do |booking| %>
               <p><%= booking.start_date %> au <%= booking.end_date %> : <%= booking.user.firstName %> <%= booking.user.lastName %></p>
-              <div class="m-0">
               <% if booking.confirmation == "pending" %>
                 <%= link_to "Accepter", accept_booking_path(booking), data: {"turbo-method": :patch}, class: "btn btn-success btn-sm" %>
                 <%= link_to "Refuser", refuse_booking_path(booking), data: {"turbo-method": :patch}, class: "btn btn-danger btn-sm" %>
@@ -119,7 +121,6 @@
               <% else %>
                 <p class="fw-bold text-danger"><i class="fa-solid fa-xmark"></i> Refusée !</p>
               <% end %>
-              </div>
             <% end %>
           </div>
         </div>
