@@ -1,6 +1,6 @@
 <div class="container mt-4">
 
-  <h1>Mes réservations</h1>
+  <h1>Mes réservations <small>(<%= @bookings.size %>)</small></h1>
 
   <hr>
 
@@ -43,7 +43,7 @@
                 <%= f.hidden_field :booking_id, value: booking.id %>
                 <%= f.input :comment, label: "Commentaire" %>
                 <%= f.input :rating, label: "Note /5" %>
-                <%= f.button :submit, class:"btn btn-primary" %>
+                <%= f.button :submit, label: "Soumettre", class:"btn btn-primary" %>
               <% end %>
             <% end %>
           <% end %>

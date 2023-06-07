@@ -14,9 +14,7 @@
 
 .card-flat > img {
   border-radius: $border-radius-card;
-  height: 70%;
-  width: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .card-details {

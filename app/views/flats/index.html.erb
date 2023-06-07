@@ -1,77 +1,84 @@
-<div class="m-4">
+<div class="container mt-4">
 
-  <h1>Tous nos appartements (<%= @flats.size %>)</h1>
+<h1>Tous nos logements <small>(<%= @flats.size %>)</small></h1>
 
-  <%= link_to 'Ajouter un appartement', new_flat_path, class: "btn btn-info" %>
+<%= link_to 'Ajouter un appartement', new_flat_path, class: "btn btn-info" %>
 
-  <div class="main-container">
-    <div class="cards">
-      <% @flats.each do |flat| %>
-        <div class="card card-flat">
+  <div class="row">
 
-          <% if !flat.photos.empty? %>
-            <div class="card-img-top">
-              <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-                <ol class="carousel-indicators">
-                  <% flat.photos.each_with_index do |photo, index| %>
-                    <li data-target="#carouselExampleIndicators" data-slide-to="<%= index %>" <% if index == 0 %>class="active"<% end %>></li>
-                  <% end %>
-                </ol>
-                <div class="carousel-inner">
-                  <% flat.photos.each_with_index do |photo, index| %>
-                    <div class="carousel-item <% if index == 0 %>active<% end %>">
-                      <%= cl_image_tag photo.key, class: "d-block w-100", height: 300, crop: :pad %>
+    <div class="col-md-8">
+
+      <div class="d-flex align-items-stretch">
+        <div class="cards">
+          <% @flats.each do |flat| %>
+            <div class="card card-flat">
+
+              <% if !flat.photos.empty? %>
+                <div class="card-img-top">
+                  <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                      <% flat.photos.each_with_index do |photo, index| %>
+                        <li data-target="#carouselExampleIndicators" data-slide-to="<%= index %>" <% if index == 0 %>class="active"<% end %>></li>
+                      <% end %>
+                    </ol>
+                    <div class="carousel-inner">
+                      <% flat.photos.each_with_index do |photo, index| %>
+                        <div class="carousel-item <% if index == 0 %>active<% end %>">
+                          <%= cl_image_tag photo.key, class: "d-block w-100", height: 180, crop: :thumb %>
+                        </div>
+                      <% end %>
                     </div>
+                    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                      <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                      <span class="sr-only">Next</span>
+                    </a>
+                  </div>
+                </div>
+              <% end %>
+
+              <div class="card-body px-3">
+                <div class="card-title">
+                  <%= link_to flat.name, flat_path(flat), class: "text-decoration-none text-bold link-dark" %>
+                </div>
+                <div class="card-text text-gray pt-1">
+                  <% if flat.description.length > 70 %>
+                    <p class="mb-0 text-12"><%= flat.description[0..70] %>...</p>
+                  <% else %>
+                    <p class="mb-0 text-12"><%= flat.description %></p>
                   <% end %>
                 </div>
-                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                  <span class="sr-only">Previous</span>
-                </a>
-                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                  <span class="sr-only">Next</span>
-                </a>
               </div>
-            </div>
-          <% end %>
 
-          <div class="card-body text-center px-2">
-            <div class="card-title">
-              <%= link_to flat.name, flat_path(flat), class: "text-decoration-none text-bold link-dark" %>
-            </div>
-            <div class="card-text text-gray pt-1">
-              <% if flat.description.length > 70 %>
-                <p><%= flat.description[0..70] %>...</p>
-              <% else %>
-                <p><%= flat.description[0..70] %></p>
+              <% if policy(flat).edit? && policy(flat).destroy? %>
+                <div class="card-footer d-flex justify-content-between p-2 fst-italic">
+                  <%= link_to "<i class='fa-solid fa-pen-to-square'></i>".html_safe,
+                    edit_flat_path(flat),
+                    class: "text-decoration-none link-dark"
+                  %>
+                  <%= link_to "<i class='fa-solid fa-trash-can' style='color: #ff2600;'></i>".html_safe,
+                    flat_path(flat),
+                    class: "text-decoration-none link-dark",
+                    data: {turbo_method: :delete, turbo_confirm: "Confirmer la suppression ?"}
+                  %>
+                </div>
               <% end %>
-            </div>
-          </div>
 
-          <% if policy(flat).edit? && policy(flat).destroy? %>
-            <div class="card-footer d-flex justify-content-between p-2 fst-italic">
-              <%= link_to "<i class='fa-solid fa-pen-to-square'></i> Modifier".html_safe,
-                edit_flat_path(flat),
-                class: "text-decoration-none link-dark"
-              %>
-              <%= link_to "<i class='fa-solid fa-trash'></i> Supprimer".html_safe,
-                flat_path(flat),
-                class: "text-decoration-none link-dark",
-                data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}
-              %>
             </div>
           <% end %>
-
         </div>
-      <% end %>
+      </div>
     </div>
 
-    <div style="width: 100%; height: 500px;"
-        data-controller="map"
-        data-map-markers-value="<%= @markers.to_json %>"
-        data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>">
+    <div class="col-md-4">
+      <div style="width: 100%; height: 600px; position:sticky; top: 0;"
+          data-controller="map"
+          data-map-markers-value="<%= @markers.to_json %>"
+          data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>">
+      </div>
     </div>
   </div>
-
 </div>

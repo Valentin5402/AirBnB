@@ -14,7 +14,7 @@ class ReviewsController < ApplicationController
   def create
     @review = Review.new(review_params)
     @review.user = current_user
-    @review.booking_id = 1 # ATTENTION A CORRIGER
+    @review.booking_id = Booking.where(flat_id: params['flat_id'], user_id: current_user.id)[0].id
     authorize @review
     if @review.save
       redirect_to flat_path(params['flat_id'])
