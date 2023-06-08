@@ -170,6 +170,12 @@
           <p class="text-center m-0">C'est une perle rare ! Il y a déjà eu <%= pluralize @flat.bookings.size, "réservation" %> pour ce logement</p>
         </div>
       <% end %>
+
+      <% if current_user != @flat.user %>
+        <div class="card-details">
+          <%= render "bookings/form",{flat: @flat, booking: @booking} %>
+        </div>
+      <% end %>
     </div>
 
   </div>
