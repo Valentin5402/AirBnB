@@ -29,10 +29,12 @@ class FlatsController < ApplicationController
     @reviews = @flat.reviews
     @number_of_reviews = @reviews.size
     @average_rating = @reviews.average(:rating)
+    @flat_equipments = @flat.equipments
     @marker = [{ lat: @flat.latitude,
                  lng: @flat.longitude,
                  info_window: render_to_string(partial: "info_window", locals: { flat: @flat }),
                  marker_html: render_to_string(partial: "marker", locals: { flat: @flat }) }]
+    @booking = Booking.new
   end
 
   def new
@@ -43,6 +45,7 @@ class FlatsController < ApplicationController
   def create
     @flat = Flat.new(params_flat)
     @flat.user = current_user
+    @flat.equipments = Equipment.where(id: params[:flat][:equipment_ids])
     authorize @flat
     if @flat.save
       redirect_to flats_path
@@ -55,6 +58,7 @@ class FlatsController < ApplicationController
   end
 
   def update
+    @flat.equipments = Equipment.where(id: params[:flat][:equipment_ids])
     if @flat.update(params_flat)
       redirect_to flat_path(@flat)
     else
@@ -75,6 +79,6 @@ class FlatsController < ApplicationController
   end
 
   def params_flat
-    params.require(:flat).permit(:name, :address, :description, :price_per_night, :number_of_guests, photos: [])
+    params.require(:flat).permit(:name, :address, :description, :price_per_night, :number_of_guests, photos: [], equipment_ids: [])
   end
 end

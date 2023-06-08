@@ -20,19 +20,19 @@ class Booking < ApplicationRecord
   def check_available
     check = false
     reservations = Booking.where(flat: flat, confirmation: "accepted")
-    listReservation = Array.new
+    list_of_reservations = []
     reservations.each do |reservation|
-      listReservation << [reservation.start_date, reservation.end_date]
+      list_of_reservations << [reservation.start_date, reservation.end_date]
     end
     check = false
-    listReservation.each do |reservation|
-      if (start_date >= reservation[0] && start_date < reservation[1]) || (end_date >= reservation[0] && end_date < reservation[1]) || (start_date <= reservation[0] && end_date >=reservation[1] )
+    list_of_reservations.each do |reservation|
+      if (start_date > reservation[0] && start_date < reservation[1]) || (end_date > reservation[0] && end_date < reservation[1]) || (start_date <= reservation[0] && end_date >= reservation[1])
         check = true
         break
       end
     end
     # raise
-    errors.add(:start_date, "Vous ne pouvez pas réserver cet appartement pendant ces temps.") if check
-    errors.add(:end_date, "Vous ne pouvez pas réserver cet appartement pendant ces temps.") if check
+    errors.add(:start_date, "Vous ne pouvez pas réserver cet appartement à ces dates") if check
+    errors.add(:end_date, "Vous ne pouvez pas réserver cet appartement à ces dates") if check
   end
 end

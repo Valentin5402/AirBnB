@@ -1,17 +1,43 @@
 <div class="container mt-4">
-
-  <h1>Mes réservations <small>(<%= @bookings.size %>)</small></h1>
-
-  <hr>
-
   <div class="row">
+
+    <% if !@bookings_as_owner.size.zero? %>
+      <h1>Tous les séjours chez moi <small>(<%= @bookings_as_owner.size %>)</small></h1>
+    <% end %>
 
     <% @bookings_as_owner.each do |booking| %>
       <div class="col-md-4 mt-3 d-flex align-items-stretch">
         <div class="card-details p-4">
-          <p class="fw-bold fs-5"><%= booking.flat.name %></p>
-          <p>Réservé par : <%= booking.user.firstName %> <%= booking.user.lastName %></p>
-          <p>Du <%= booking.start_date %> au <%= booking.end_date %></p>
+          <%= link_to booking.flat.name, flat_path(booking.flat), class: "text-decoration-none fs-5 text-black fw-bold" %>
+
+
+          <div id="carouselExampleIndicators" class="carousel slide my-3" data-ride="carousel">
+            <ol class="carousel-indicators">
+              <% booking.flat.photos.each_with_index do |photo, index| %>
+                <li data-target="#carouselExampleIndicators" data-slide-to="<%= index %>" <% if index == 0 %>class="active"<% end %>></li>
+              <% end %>
+            </ol>
+            <div class="carousel-inner">
+              <% booking.flat.photos.each_with_index do |photo, index| %>
+                <div class="carousel-item <% if index == 0 %>active<% end %>">
+                  <%= cl_image_tag photo.key, class: "d-block w-100", height: 180, crop: :thumb %>
+                </div>
+              <% end %>
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="sr-only">Next</span>
+            </a>
+          </div>
+
+
+          <p>Hôte : <strong><%= booking.user.firstName %> <%= booking.user.lastName %></strong></p>
+          <p><strong><%= pluralize (booking.end_date - booking.start_date).to_i, "nuit" %></strong> du <%= booking.start_date %> au <%= booking.end_date %></p>
+          <p class="fs-4"><%= (booking.end_date - booking.start_date).to_i * booking.flat.price_per_night %>€</p>
           <% if booking.confirmation == "pending" %>
             <%= link_to "Accepter", accept_booking_path(booking), data: {"turbo-method": :patch}, class: "btn btn-success" %>
             <%= link_to "Refuser", refuse_booking_path(booking), data: {"turbo-method": :patch}, class: "btn btn-danger" %>
@@ -24,14 +50,47 @@
       </div>
     <% end %>
 
-    <% if !@bookings_as_owner.size.zero? && !@bookings_as_tenant.size.zero? %><hr><% end %>
+    <% if !@bookings_as_owner.size.zero? && !@bookings_as_tenant.size.zero? %>
+      <div class="mt-4">
+        <hr>
+      </div>
+    <% end %>
+
+    <% if !@bookings_as_tenant.size.zero? %>
+      <h1><i class="fa-solid fa-sun text-warning"></i> Mes vacances <small>(<%= @bookings_as_tenant.size %>)</small></h1>
+    <% end %>
 
     <% @bookings_as_tenant.each do |booking| %>
       <div class="col-md-4 mt-3 d-flex align-items-stretch mt-4">
         <div class="card-details p-4">
-          <p class="fw-bold fs-5"><%= booking.flat.name %></p>
+          <%= link_to booking.flat.name, flat_path(booking.flat), class: "text-decoration-none fs-5 text-black fw-bold" %>
+
+          <div id="carouselExampleIndicators" class="carousel slide my-3" data-ride="carousel">
+            <ol class="carousel-indicators">
+              <% booking.flat.photos.each_with_index do |photo, index| %>
+                <li data-target="#carouselExampleIndicators" data-slide-to="<%= index %>" <% if index == 0 %>class="active"<% end %>></li>
+              <% end %>
+            </ol>
+            <div class="carousel-inner">
+              <% booking.flat.photos.each_with_index do |photo, index| %>
+                <div class="carousel-item <% if index == 0 %>active<% end %>">
+                  <%= cl_image_tag photo.key, class: "d-block w-100", height: 180, crop: :thumb %>
+                </div>
+              <% end %>
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="sr-only">Next</span>
+            </a>
+          </div>
+
           <p class="fst-italic"><%= booking.flat.address %></p>
-          <p>Du <%= booking.start_date %> au <%= booking.end_date %></p>
+          <p><strong><%= pluralize (booking.end_date - booking.start_date).to_i, "nuit" %></strong> du <%= booking.start_date %> au <%= booking.end_date %></p>
+          <p class="fs-4"><%= (booking.end_date - booking.start_date).to_i * booking.flat.price_per_night %>€</p>
           <% if booking.confirmation == "pending" %>
             <p class="fw-bold text-warning"><i class="fa-solid fa-clock"></i> En attente d'acceptation</p>
           <% elsif booking.confirmation == "refused" %>
@@ -43,7 +102,7 @@
                 <%= f.hidden_field :booking_id, value: booking.id %>
                 <%= f.input :comment, label: "Commentaire" %>
                 <%= f.input :rating, label: "Note /5" %>
-                <%= f.button :submit, label: "Soumettre", class:"btn btn-primary" %>
+                <%= f.button :submit, "Soumettre", class:"btn btn-primary" %>
               <% end %>
             <% end %>
           <% end %>
