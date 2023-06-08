@@ -51,7 +51,7 @@ class BookingsController < ApplicationController
   def refuse
     @booking = Booking.find(params[:id])
     @booking.update(confirmation: "refused")
-    authorize @bookink
+    authorize @booking
     redirect_back(fallback_location: flat_path(@booking.flat), notice: "La réservation a été refusée !")
   end
 
