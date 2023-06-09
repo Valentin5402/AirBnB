@@ -3,7 +3,17 @@
 <h1>Tous nos logements <small>(<%= @flats.size %>)</small></h1>
 
 <%= link_to 'Ajouter un appartement', new_flat_path, class: "btn btn-info" %>
-
+<div class="row justify-content-center">
+  <div class="col-sm-8 my-3">
+    <%= form_with url: flats_path, method: :get do |form| %>
+      <%= form.label :lieu, "Lieu:" %>
+      <%= form.text_field :lieu, class: "form-control" %>
+      <%= form.label :range, "Range:" %>
+      <%= form.text_field :range, class: "form-control" %>
+      <%= form.submit "Search", class: "btn btn-primary" %>
+    <% end %>
+  </div>
+</div>
   <div class="row">
 
     <div class="col-md-8">
