@@ -6,9 +6,15 @@ class FlatsController < ApplicationController
 
   def index
     @flats = policy_scope(Flat)
-    if params[:query].present?
-      @flats = Flat.where("address ILIKE ?", "%#{params[:query]}%")
+    if params[:range].present?
+      range = params[:range].to_i >= 10 ? params[:range].to_i : 10
+    else
+      range = 10
     end
+    if params[:lieu].present?
+      @flats = Flat.near("%#{params[:lieu]}%", range)
+    end
+    # raise
     @markers = @flats.geocoded.map do |flat|
       {
         lat: flat.latitude,
