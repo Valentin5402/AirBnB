@@ -27,6 +27,7 @@ class Booking < ApplicationRecord
     list_of_all_accepted_reservations.each do |reservation|
       if (start_date > reservation[0] && start_date < reservation[1]) || (end_date > reservation[0] && end_date < reservation[1]) || (start_date <= reservation[0] && end_date >= reservation[1])
         check = true
+        return check
         break
       end
     end
@@ -36,6 +37,7 @@ class Booking < ApplicationRecord
     list_of_my_pending_reservations.each do |reservation|
       if (start_date > reservation[0] && start_date < reservation[1]) || (end_date > reservation[0] && end_date < reservation[1]) || (start_date <= reservation[0] && end_date >= reservation[1])
         check = true
+        return check
         break
       end
     end
