@@ -1,31 +1,15 @@
 <div class="container mt-4">
 
   <div class="row">
-    <div class="col-md-8">
-      <h1>Tous nos logements <small>(<%= @flats.size %>)</small></h1>
+    <div class="col-md-8 mb-3">
+      <h1>Nos logements <small>(<%= @flats.size %>)</small></h1>
     </div>
 
-    <div class="col-md-4">
-      <div class="row justify-content-center border mb-4 bg-white card">
-        <h4 class="my-3"><i class="fa-solid fa-umbrella-beach text-success"></i> Échappez-vous du quotidien !</h4>
-        <%= form_with url: flats_path, method: :get do |form| %>
-        <%= form.text_field :lieu,
-            placeholder: "Lieu",
-            class: "form-control mb-3",
-            input_html: {data: {address_autocomplete_target: "address"}},
-            wrapper_html: {data: {controller: "address-autocomplete",
-            address_autocomplete_api_key_value: ENV["MAPBOX_API_KEY"]}} %>
-          <%= form.text_field :rayon, placeholder: "Rayon", class: "form-control mb-3" %>
-          <%= form.submit "Rechercher", class: "btn btn-primary mb-3" %>
-        <% end %>
-
-      </div>
-    </div>
   </div>
 
   <div class="row">
 
-    <div class="col-md-8">
+    <div class=" col col-md-8 ">
 
       <div class="d-flex align-items-stretch">
         <div class="cards">
@@ -91,6 +75,21 @@
     </div>
 
     <div class="col-md-4">
+
+    <div class="row justify-content-center border mb-4 bg-white card">
+        <h4 class="my-3"><i class="fa-solid fa-umbrella-beach text-success"></i> Échappez-vous du quotidien !</h4>
+        <%= form_with url: flats_path, method: :get do |form| %>
+        <%= form.text_field :lieu,
+            placeholder: "Lieu",
+            class: "form-control mb-3",
+            input_html: {data: {address_autocomplete_target: "address"}},
+            wrapper_html: {data: {controller: "address-autocomplete",
+            address_autocomplete_api_key_value: ENV["MAPBOX_API_KEY"]}} %>
+          <%= form.text_field :rayon, placeholder: "Rayon", class: "form-control mb-3" %>
+          <%= form.submit "Rechercher", class: "btn btn-primary mb-3" %>
+        <% end %>
+
+      </div>
       <div style="width: 100%; height: 600px; position:sticky; top: 0;"
           data-controller="map"
           data-map-markers-value="<%= @markers.to_json %>"
