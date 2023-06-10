@@ -100,8 +100,15 @@
             wrapper_html: {data: {controller: "address-autocomplete",
             address_autocomplete_api_key_value: ENV["MAPBOX_API_KEY"]}}
           %>
-            <%= form.input :range, label: false, placeholder: "Rayon en kilomètres", class: "form-control mb-3" %>
-            <%= form.submit "Rechercher", class: "btn btn-primary mb-3" %>
+            <%= form.hidden_field :range, id: "range-input" %>
+
+              <div class="px-2 mb-0 text-gray">
+              Rayon de la recherche (km)
+              </div>
+                <div id="slider" data-controller="slider" class="m-3 mb-4">
+                  <div id="custom-handle" class="ui-slider-handle"></div>
+                </div>
+            <%= form.submit "Rechercher", class: "btn btn-primary btn-block mb-3", style: "width:100%;" %>
           <% end %>
       </div>
       <div class="row justify-content-center border mb-4 card-airbnb">
@@ -115,4 +122,5 @@
       </div>
     </div>
   </div>
+
 </div>

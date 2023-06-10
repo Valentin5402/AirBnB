@@ -21,3 +21,6 @@ application.register("map", MapController)
 
 import TomselectController from "./tomselect_controller"
 application.register("tomselect", TomselectController)
+
+import SliderController from "./slider_controller"
+application.register("slider", SliderController)
