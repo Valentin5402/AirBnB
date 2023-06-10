@@ -1,9 +1,8 @@
 <div class="container mt-4">
 
   <div class="row">
-    <div class="col-md-8">
-      <h1>Tous nos logements <small>(<%= @flats.size %>)</small></h1>
-      <%= link_to 'Ajouter un appartement', new_flat_path, class: "btn btn-info" %>
+    <div class="col-md-8 mb-3">
+      <h1>Nos logements <small>(<%= @flats.size %>)</small></h1>
     </div>
 
     <div class="col-md-4">
@@ -21,7 +20,6 @@
         <% end %>
       </div>
     </div>
-  </div>
 
   <div class="row">
 
