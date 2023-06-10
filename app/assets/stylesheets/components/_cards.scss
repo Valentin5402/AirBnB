@@ -11,6 +11,14 @@
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
+.card-airbnb {
+  border-radius: $border-radius-card;
+  background-color: white;
+  border: solid white 1px;
+  overflow: hidden;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
 .card-flat > img {
   border-radius: $border-radius-card;
   object-fit: contain;
