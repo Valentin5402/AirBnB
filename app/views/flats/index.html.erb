@@ -52,7 +52,7 @@
                   <% end %>
                 </div>
                 </div>
-                <div class="d-flex align-items-start flex-column bd-highlight" style="height: 80px;">
+                <div class="d-flex align-items-start flex-column bd-highlight" style="height: 50px;">
                 <div class="bd-highlight mb-0 text-12 text-gray">
                   <% if flat.description.length > 70 %>
                     <%= flat.description[0..70] %>...
@@ -60,25 +60,28 @@
                     <%= flat.description %>
                   <% end %>
                 </div>
-                <div class="mt-auto mb-0 bd-highlight text-12">
-                  <%= flat.price_per_night %> € par nuit
                 </div>
-                </div>
+                  <div class="d-flex justify-content-between align-items-center">
+                  <div class="text-12">
+                    <%= flat.price_per_night %> € par nuit
+                  </div>
+                  <div>
+                    <% if policy(flat).edit? && policy(flat).destroy? %>
+                      <%= link_to "<i class='fa-solid fa-pen-to-square'></i>".html_safe,
+                        edit_flat_path(flat),
+                        class: "text-decoration-none link-dark"
+                      %>
+                      <%= link_to "<i class='fa-solid fa-trash-can' style='color: #ff2600;'></i>".html_safe,
+                        flat_path(flat),
+                        class: "text-decoration-none link-dark",
+                        data: {turbo_method: :delete, turbo_confirm: "Confirmer la suppression ?"}
+                      %>
+                    <% end %>
+                  </div>
+                  </div>
               </div>
 
-              <% if policy(flat).edit? && policy(flat).destroy? %>
-                <div class="card-footer d-flex justify-content-between p-2 fst-italic">
-                  <%= link_to "<i class='fa-solid fa-pen-to-square'></i>".html_safe,
-                    edit_flat_path(flat),
-                    class: "text-decoration-none link-dark"
-                  %>
-                  <%= link_to "<i class='fa-solid fa-trash-can' style='color: #ff2600;'></i>".html_safe,
-                    flat_path(flat),
-                    class: "text-decoration-none link-dark",
-                    data: {turbo_method: :delete, turbo_confirm: "Confirmer la suppression ?"}
-                  %>
-                </div>
-              <% end %>
+
 
             </div>
           <% end %>
