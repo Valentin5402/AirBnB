@@ -2,11 +2,18 @@
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 16px;
-  margin: 32px;
 }
 
 .card-flat {
   border-radius: $border-radius-card;
+  border: solid white 1px;
+  overflow: hidden;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.card-airbnb {
+  border-radius: $border-radius-card;
+  background-color: white;
   border: solid white 1px;
   overflow: hidden;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;

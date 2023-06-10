@@ -9,13 +9,16 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto">
+      <ul class="navbar-nav me-auto d-flex align-items-center">
         <% if user_signed_in? %>
           <li class="nav-item active">
-            <%= link_to "Tous les appartements", flats_path, class: "nav-link" %>
+            <%= link_to "Tous les logements", flats_path, class: "nav-link" %>
           </li>
           <li class="nav-item">
-            <%= link_to "Réservations", bookings_path, class: "nav-link" %>
+            <%= link_to "Mes réservations", bookings_path, class: "nav-link "%>
+          </li>
+          <li class="nav-item">
+            <%= link_to "Mettre mon logement sur Airbnb", new_flat_path, class: "nav-link special" %>
           </li>
           <li class="nav-item dropdown">
             <a href="#" class="nav-link" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
