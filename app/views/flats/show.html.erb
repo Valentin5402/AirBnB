@@ -146,28 +146,28 @@
           </div>
         </div>
       <% end %>
+      <% if current_user != @flat.user %>
+        <div class="card-details">
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="d-inline-flex align-items-center">
+              <p class="text-bold text-24 m-0"><%= @flat.price_per_night %>€</p>
+              <p class="my-0 mx-2">par nuit</p>
+            </div>
 
-      <div class="card-details">
-        <div class="d-flex justify-content-between align-items-center">
-          <div class="d-inline-flex align-items-center">
-            <p class="text-bold text-24 m-0"><%= @flat.price_per_night %>€</p>
-            <p class="my-0 mx-2">par nuit</p>
+            <div class="d-inline-flex align-items-center">
+              <% if @average_rating %>
+                <p class="m-0"><i class="fa-solid fa-star"></i> <%= number_with_precision(@average_rating, precision: 2) %></p>
+                <p class="mx-2 m-0">·</p>
+              <% end %>
+              <p class="m-0 text-gray"><%= pluralize @number_of_reviews, "commentaire" %></p>
+            </div>
           </div>
-
-          <div class="d-inline-flex align-items-center">
-            <% if @average_rating %>
-              <p class="m-0"><i class="fa-solid fa-star"></i> <%= number_with_precision(@average_rating, precision: 2) %></p>
-              <p class="mx-2 m-0">·</p>
-            <% end %>
-            <p class="m-0 text-gray"><%= pluralize @number_of_reviews, "commentaire" %></p>
+          <div class="my-3">
+              <%= render "bookings/form",{flat: @flat, booking: @booking} %>
           </div>
+          <p class="text-center text-gray my-0 text-14">Aucun montant ne vous sera débité pour le moment</p>
         </div>
-        <div class="my-3">
-            <%= render "bookings/form",{flat: @flat, booking: @booking} %>
-        </div>
-        <p class="text-center text-gray my-0 text-14">Aucun montant ne vous sera débité pour le moment</p>
-      </div>
-
+      <% end %>
       <% if @flat.bookings.size >= 1 %>
         <div class="card-details my-4">
           <p class="text-center mt-3"><i class="fa-regular fa-gem fa-2xl" style="color: #ff2600;"></i></p>
