@@ -5,7 +5,7 @@ class Booking < ApplicationRecord
   belongs_to :flat
   has_many :reviews, dependent: :destroy
 
-  validate :end_date_must_be_after_start_date, :start_date_must_be_after_today, #:check_available
+  validate :end_date_must_be_after_start_date, :start_date_must_be_after_today#, :check_available
 
   private
 
