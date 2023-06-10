@@ -42,15 +42,28 @@
               </div>
 
               <div class="card-body px-3">
-                <div class="card-title">
+                <div class="card-title d-flex justify-content-between">
+                <div>
                   <%= link_to flat.name, flat_path(flat), class: "text-decoration-none text-bold link-dark" %>
                 </div>
-                <div class="card-text text-gray pt-1">
-                  <% if flat.description.length > 70 %>
-                    <p class="mb-0 text-12"><%= flat.description[0..70] %>...</p>
-                  <% else %>
-                    <p class="mb-0 text-12"><%= flat.description %></p>
+                <div class="text-12 d-flex align-items-center">
+                <% if flat.reviews.average(:rating) != nil  %>
+                  <i class="fa-solid fa-star mx-2"></i>
+                  <%= number_with_precision(flat.reviews.average(:rating), precision: 2) %>
                   <% end %>
+                </div>
+                </div>
+                <div class="d-flex align-items-start flex-column bd-highlight" style="height: 80px;">
+                <div class="bd-highlight mb-0 text-12 text-gray">
+                  <% if flat.description.length > 70 %>
+                    <%= flat.description[0..70] %>...
+                  <% else %>
+                    <%= flat.description %>
+                  <% end %>
+                </div>
+                <div class="mt-auto mb-0 bd-highlight text-12">
+                  <%= flat.price_per_night %> € par nuit
+                </div>
                 </div>
               </div>
 
@@ -90,10 +103,15 @@
         <% end %>
 
       </div>
+      <div class="row justify-content-center border mb-4 bg-white card">
+      <div class="p-3">
       <div style="width: 100%; height: 600px; position:sticky; top: 0;"
           data-controller="map"
           data-map-markers-value="<%= @markers.to_json %>"
           data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>">
+      </div>
+
+      </div>
       </div>
     </div>
   </div>
