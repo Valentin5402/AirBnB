@@ -89,29 +89,27 @@
 
     <div class="col-md-4">
 
-    <div class="row justify-content-center border mb-4 card-airbnb">
-        <h4 class="my-3"><i class="fa-solid fa-umbrella-beach text-success"></i> Échappez-vous du quotidien !</h4>
-        <%= form_with url: flats_path, method: :get do |form| %>
-        <%= form.text_field :lieu,
-            placeholder: "Lieu",
-            class: "form-control mb-3",
-            input_html: {data: {address_autocomplete_target: "address"}},
+      <div class="row justify-content-center border mb-4 card-airbnb">
+          <h4 class="my-3"><i class="fa-solid fa-umbrella-beach text-success"></i> Échappez-vous du quotidien !</h4>
+          <%= simple_form_for :flat, url: flats_path, method: :get do |form| %>
+          <%= form.input :lieu,
+            label: false,
+            input_html: {data: {address_autocomplete_target: "address"}, class: "d-none"},
             wrapper_html: {data: {controller: "address-autocomplete",
-            address_autocomplete_api_key_value: ENV["MAPBOX_API_KEY"]}} %>
-          <%= form.text_field :rayon, placeholder: "Rayon", class: "form-control mb-3" %>
-          <%= form.submit "Rechercher", class: "btn btn-primary mb-3" %>
-        <% end %>
-
+            address_autocomplete_api_key_value: ENV["MAPBOX_API_KEY"]}}
+          %>
+            <%= form.input :range, placeholder: "Rayon en kilomètres", class: "form-control mb-3" %>
+            <%= form.submit "Rechercher", class: "btn btn-primary mb-3" %>
+          <% end %>
       </div>
       <div class="row justify-content-center border mb-4 card-airbnb">
-      <div class="p-3">
-      <div style="width: 100%; height: 600px; position:sticky; top: 0;"
-          data-controller="map"
-          data-map-markers-value="<%= @markers.to_json %>"
-          data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>">
-      </div>
-
-      </div>
+        <div class="p-3">
+          <div style="width: 100%; height: 600px; position:sticky; top: 0;"
+              data-controller="map"
+              data-map-markers-value="<%= @markers.to_json %>"
+              data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>">
+          </div>
+        </div>
       </div>
     </div>
   </div>
