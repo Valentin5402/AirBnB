@@ -162,9 +162,11 @@
             <p class="m-0 text-gray"><%= pluralize @number_of_reviews, "commentaire" %></p>
           </div>
         </div>
-        <% if @flat.user != current_user %>
-          <%# <%= link_to "Réserver cet appartement", new_flat_booking_path(@flat), class: "btn btn-primary my-3 w-100" %>
-        <% end %>
+        <div class="my-3">
+          <% if current_user != @flat.user %>
+            <%= render "bookings/form",{flat: @flat, booking: @booking} %>
+          <% end %>
+        </div>
         <p class="text-center text-gray my-0 text-14">Aucun montant ne vous sera débité pour le moment</p>
       </div>
 
@@ -175,11 +177,7 @@
         </div>
       <% end %>
 
-      <% if current_user != @flat.user %>
-        <div class="card-details my-4" >
-          <%= render "bookings/form",{flat: @flat, booking: @booking} %>
-        </div>
-      <% end %>
+
     </div>
 
   </div>
