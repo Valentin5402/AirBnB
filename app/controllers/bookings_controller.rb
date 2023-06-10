@@ -42,6 +42,8 @@ class BookingsController < ApplicationController
     if !check
       @booking.update(confirmation: "accepted")
       redirect_back(fallback_location: flat_path(@booking.flat), notice: "La réservation a été acceptée !")
+    else
+      redirect_back(fallback_location: flat_path(@booking.flat), notice: "Vous ne pouvez pas accepter cette réservation")
     end
   end
 
