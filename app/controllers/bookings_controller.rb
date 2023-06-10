@@ -41,7 +41,7 @@ class BookingsController < ApplicationController
       # Je veux afficher les réservations d'autres personnes de mon appartement si je suis sur la page de mon appartement
       # Seulement pour le propriétaire de l'appartement
       @other_bookings_for_my_flat = @bookings.order(:start_date).select { |booking| @flat.user == current_user && booking.flat == @flat }
-      @past_bookings = @my_bookings_of_this_flat.select { |booking| booking.end_date >= Date.today }
+      @past_bookings = @my_bookings_of_this_flat.select { |booking| booking.end_date <= Date.today }
       @reviews = @flat.reviews
       @number_of_reviews = @reviews.size
       @average_rating = @reviews.average(:rating)

@@ -19,8 +19,8 @@ class FlatsController < ApplicationController
       {
         lat: flat.latitude,
         lng: flat.longitude,
-        info_window: render_to_string(partial: "info_window", locals: { flat: flat }),
-        marker_html: render_to_string(partial: "marker", locals: { flat: flat })
+        info_window: render_to_string(partial: "index_info_window", locals: { flat: flat }),
+        marker_html: render_to_string(partial: "index_marker", locals: { flat: flat })
       }
     end
   end
@@ -41,8 +41,8 @@ class FlatsController < ApplicationController
     @flat_equipments = @flat.equipments
     @marker = [{ lat: @flat.latitude,
                  lng: @flat.longitude,
-                 info_window: render_to_string(partial: "info_window", locals: { flat: @flat }),
-                 marker_html: render_to_string(partial: "marker", locals: { flat: @flat }) }]
+                 info_window: render_to_string(partial: "show_info_window", locals: { flat: @flat }),
+                 marker_html: render_to_string(partial: "show_marker", locals: { flat: @flat }) }]
     @booking = Booking.new
   end
 

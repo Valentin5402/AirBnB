@@ -130,17 +130,17 @@
             <% @other_bookings_for_my_flat.each do |booking| %>
               <p><%= booking.start_date %> au <%= booking.end_date %> : <%= booking.user.firstName %> <%= booking.user.lastName %></p>
               <div class="mb-3" id="confirmation-for-owner">
-              <% if booking.confirmation == "pending" %>
-                <%= link_to "Accepter", accept_booking_path(booking), data: {"turbo-method": :patch}, class: "btn btn-success btn-sm" %>
-                <%= link_to "Refuser", refuse_booking_path(booking), data: {"turbo-method": :patch}, class: "btn btn-danger btn-sm" %>
-                <hr>
-              <% elsif booking.confirmation == "accepted" %>
-                <p class="fw-bold text-success"><i class="fa-solid fa-check"></i> Acceptée !</p>
-                <hr>
-              <% else %>
-                <p class="fw-bold text-danger"><i class="fa-solid fa-xmark"></i> Refusée !</p>
-                <hr>
-              <% end %>
+                <% if booking.confirmation == "pending" %>
+                  <%= link_to "Accepter", accept_booking_path(booking), data: {"turbo-method": :patch}, class: "btn btn-success btn-sm" %>
+                  <%= link_to "Refuser", refuse_booking_path(booking), data: {"turbo-method": :patch}, class: "btn btn-danger btn-sm" %>
+                  <hr>
+                <% elsif booking.confirmation == "accepted" %>
+                  <p class="fw-bold text-success"><i class="fa-solid fa-check"></i> Acceptée !</p>
+                  <hr>
+                <% else %>
+                  <p class="fw-bold text-danger"><i class="fa-solid fa-xmark"></i> Refusée !</p>
+                  <hr>
+                <% end %>
               </div>
             <% end %>
           </div>
@@ -208,10 +208,8 @@
     <% end %>
 
     <%# Test pour autoriser uniquement ceux qui ont réservé l'appartement %>
-    <%# Pour afficher le formulaire, il faut aussi que la dernière réservation ait le statut accepted et soit passée %>
-    <%# <% if !Booking.where(user: current_user, flat: @flat).size.zero? %>
-
-    <%# !!! Il manque une dernière condition pour enlever le formulaire lorsque l'avis a été créé !!! Si l'utilisateur a laissé un dernier avis %>
+    <%# Pour afficher le formulaire, il faut aussi que la dernière réservation ait le statut accepted et soit passée
+    Et pour enlever le formulaire, il faut que l'utilisateur ait laissé un dernier avis pour sa réservation %>
 
     <% if !@past_bookings.empty? && @past_bookings.last.confirmation == "accepted" && @past_bookings.last.reviews.length == 0 %>
       <%= simple_form_for [@flat, @review] do |f| %>

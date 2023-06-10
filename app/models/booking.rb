@@ -19,13 +19,21 @@ class Booking < ApplicationRecord
 
   def check_available
     check = false
-    reservations = Booking.where(flat: flat, confirmation: "accepted")
-    list_of_reservations = []
-    reservations.each do |reservation|
-      list_of_reservations << [reservation.start_date, reservation.end_date]
+    my_pending_reservations = Booking.where(user: user, flat: flat, confirmation: "pending")
+    all_accepted_reservations = Booking.where(flat: flat, confirmation: "accepted")
+    list_of_all_accepted_reservations = all_accepted_reservations.map do |reservation|
+      [reservation.start_date, reservation.end_date]
     end
-    check = false
-    list_of_reservations.each do |reservation|
+    list_of_all_accepted_reservations.each do |reservation|
+      if (start_date > reservation[0] && start_date < reservation[1]) || (end_date > reservation[0] && end_date < reservation[1]) || (start_date <= reservation[0] && end_date >= reservation[1])
+        check = true
+        break
+      end
+    end
+    list_of_my_pending_reservations = my_pending_reservations.map do |reservation|
+      [reservation.start_date, reservation.end_date]
+    end
+    list_of_my_pending_reservations.each do |reservation|
       if (start_date > reservation[0] && start_date < reservation[1]) || (end_date > reservation[0] && end_date < reservation[1]) || (start_date <= reservation[0] && end_date >= reservation[1])
         check = true
         break

@@ -1,5 +1,7 @@
 .mapboxgl-popup {
-  max-width: 200px;
+  max-width: 100px;
+  border-radius: 4px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.1);
 }
 
 .mapboxgl-popup-content {
@@ -11,4 +13,8 @@
   height: 100vh;
   position: sticky;
   top: 0;
+}
+
+#small-line-height {
+  line-height: 16px;
 }
