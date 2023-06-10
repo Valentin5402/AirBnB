@@ -28,7 +28,7 @@ class BookingsController < ApplicationController
     @booking.confirmation = "pending"
     authorize @booking
     if @booking.save
-      redirect_to flat_path(@flat)
+      redirect_to bookings_path
       flash[:notice] = "La réservation a bien été effectuée !"
     else
       redirect_back(fallback_location: flat_path(@booking.flat), notice: "Cet appartement est déjà réservé à ces dates.")
