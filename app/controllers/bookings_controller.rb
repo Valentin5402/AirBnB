@@ -29,28 +29,9 @@ class BookingsController < ApplicationController
     authorize @booking
     if @booking.save
       redirect_to flat_path(@flat)
+      flash[:notice] = "La réservation a bien été effectuée !"
     else
-      # respond_to do |format|
-      #   format.text { render partial: "bookings/form", locals: { flat: @flat, booking: @booking }, formats: [:html] }
-      # end
-      @review = Review.new
-      @bookings = Booking.all
-      # Je veux afficher mes réservations si je suis sur la page de l'appartement de quelqu'un d'autre
-      # Seulement pour celui qui a réservé
-      @my_bookings_of_this_flat = @bookings.order(:start_date).select { |booking| booking.user == current_user && booking.flat == @flat }
-      # Je veux afficher les réservations d'autres personnes de mon appartement si je suis sur la page de mon appartement
-      # Seulement pour le propriétaire de l'appartement
-      @other_bookings_for_my_flat = @bookings.order(:start_date).select { |booking| @flat.user == current_user && booking.flat == @flat }
-      @past_bookings = @my_bookings_of_this_flat.select { |booking| booking.end_date <= Date.today }
-      @reviews = @flat.reviews
-      @number_of_reviews = @reviews.size
-      @average_rating = @reviews.average(:rating)
-      @flat_equipments = @flat.equipments
-      @marker = [{ lat: @flat.latitude,
-                   lng: @flat.longitude,
-                   info_window: render_to_string(partial: "/flats/info_window", locals: { flat: @flat }),
-                   marker_html: render_to_string(partial: "/flats/marker", locals: { flat: @flat }) }]
-      render "flats/show", status: :unprocessable_entity
+      redirect_back(fallback_location: flat_path(@booking.flat), notice: "Cet appartement est déjà réservé à ces dates.")
     end
   end
 
@@ -60,9 +41,7 @@ class BookingsController < ApplicationController
     check = check_available(@booking)
     if !check
       @booking.update(confirmation: "accepted")
-      redirect_back(fallback_location: flat_path(@booking.flat), notice: "La réservation a bien été acceptée !")
-    else
-      redirect_back(fallback_location: flat_path(@booking.flat), notice: "Cet appartement est déjà réservé à ces dates.")
+      redirect_back(fallback_location: flat_path(@booking.flat), notice: "La réservation a été acceptée !")
     end
   end
 

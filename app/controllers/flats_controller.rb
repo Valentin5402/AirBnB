@@ -68,7 +68,17 @@ class FlatsController < ApplicationController
 
   def update
     @flat.equipments = Equipment.where(id: params[:flat][:equipment_ids])
+    # @flat.photos.attach(params[:flat][:photos]) if params[:flat][:photos].present?
+    params[:flat][:photos].each do |photo|
+      @flat.photos.attach(photo)
+    end
+    # existing_photos = @flat.photos.attachments
     if @flat.update(params_flat)
+      # existing_photos.each do |photo|
+      #   unless @flat.photos.include?(photo)
+      #     photo.purge
+      #   end
+      # end
       redirect_to flat_path(@flat)
     else
       render :edit, status: :unprocessable_entity
@@ -88,6 +98,6 @@ class FlatsController < ApplicationController
   end
 
   def params_flat
-    params.require(:flat).permit(:name, :address, :description, :price_per_night, :number_of_guests, photos: [], equipment_ids: [])
+    params.require(:flat).permit(:name, :address, :description, :price_per_night, :number_of_guests, equipment_ids: [])
   end
 end
