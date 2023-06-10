@@ -13,6 +13,6 @@
     <%= f.input :price_per_night, label: 'Prix par nuit' %>
     <%= f.input :number_of_guests, label: 'Nombre d\'hôtes max' %>
     <%= f.input :photos, as: :file, input_html: { multiple: true } %>
-    <%= f.input :equipment_ids, as: :select, collection: Equipment.all, label: 'Équipements', input_html: { multiple: true } %>
+    <%= f.input :equipment_ids, as: :select, collection: Equipment.all, label: 'Équipements', input_html: { multiple: true, data: {controller: "tomselect"} }, include_hidden: false %>
     <%= f.submit label, class: "btn btn-primary" %>
   <% end %>
