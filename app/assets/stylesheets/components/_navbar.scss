@@ -10,3 +10,16 @@
 .navbar-lewagon .navbar-brand img {
   width: 40px;
 }
+
+.special {
+  border: 1px solid transparent;
+  border-radius: 12px;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.special:hover {
+  border: 1px solid rgb(240, 238, 238);
+  border-radius: 12px;
+  background-color: #007bff;
+  color: white;
+}
