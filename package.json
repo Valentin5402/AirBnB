@@ -8,9 +8,9 @@
     "@popperjs/core": "^2.11.7",
     "bootstrap": "^5.2.3",
     "flatpickr": "^4.6.13",
-    "tom-select": "^2.2.2",
     "jquery": "^3.7.0",
     "jquery-ui-dist": "^1.13.2",
+    "tom-select": "^2.2.2",
     "webpack": "^5.82.0",
     "webpack-cli": "^5.1.0"
   },
