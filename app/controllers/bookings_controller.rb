@@ -24,21 +24,26 @@ class BookingsController < ApplicationController
     @booking = Booking.new(booking_params)
     @booking.user = current_user
     @booking.flat = @flat
-    # raise
-    @booking.confirmation = "pending"
     authorize @booking
-    if @booking.save
-      redirect_to flat_path(@flat)
-      flash[:notice] = "La réservation a bien été effectuée !"
+    check = check_available(@booking)
+    # raise
+    if check
+      redirect_back(fallback_location: flat_path(@booking.flat), notice: "Vous avez déjà demandé la réservation à ces dates.")
     else
-      redirect_back(fallback_location: flat_path(@booking.flat), notice: "Cet appartement est déjà réservé à ces dates.")
+      @booking.confirmation = "pending"
+      if @booking.save
+        redirect_back(fallback_location: flat_path(@booking.flat), notice: "La réservation a bien été effectuée !")
+      else
+        redirect_back(fallback_location: flat_path(@booking.flat), notice: "Cet appartement est déjà réservé à ces dates.")
+      end
     end
   end
 
   def accept
     @booking = Booking.find(params[:id])
-    authorize @booking
+    @flat = @booking.flat
     check = check_available(@booking)
+    authorize @booking
     if !check
       @booking.update(confirmation: "accepted")
       redirect_back(fallback_location: flat_path(@booking.flat), notice: "La réservation a été acceptée !")
@@ -58,11 +63,19 @@ class BookingsController < ApplicationController
 
   def check_available(booking)
     check = false
-    reservations = Booking.where(flat: booking.flat, confirmation: "accepted")
     list_of_reservations = []
+    reservations = Booking.where(flat: booking.flat, confirmation: "accepted")
     reservations.each do |reservation|
       list_of_reservations << [reservation.start_date, reservation.end_date]
     end
+
+    if current_user != @flat.user then
+      my_reservations = Booking.where(flat: booking.flat, confirmation: "pending", user: current_user)
+      my_reservations.each do |reservation|
+        list_of_reservations << [reservation.start_date, reservation.end_date]
+      end
+    end
+
     list_of_reservations.each do |reservation|
       if (booking.start_date > reservation[0] && booking.start_date < reservation[1]) || (booking.end_date > reservation[0] && booking.end_date < reservation[1]) || (booking.start_date <= reservation[0] && booking.end_date >= reservation[1])
         check = true
