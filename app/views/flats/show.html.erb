@@ -162,10 +162,12 @@
             <p class="m-0 text-gray"><%= pluralize @number_of_reviews, "commentaire" %></p>
           </div>
         </div>
-        <div class="my-3">
+        <% if @flat.user != current_user %>
+          <div class="my-3">
             <%= render "bookings/form",{flat: @flat, booking: @booking} %>
-        </div>
-        <p class="text-center text-gray my-0 text-14">Aucun montant ne vous sera débité pour le moment</p>
+          </div>
+          <p class="text-center text-gray my-0 text-14">Aucun montant ne vous sera débité pour le moment</p>
+        <% end %>
       </div>
 
       <% if @flat.bookings.size >= 1 %>
