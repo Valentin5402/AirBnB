@@ -6,7 +6,11 @@ window.jQuery = $;
 window.$ = $;
 
 export default class extends Controller {
+  static targets = ["address"]
+
   connect() {
+    // console.log(this.address)
+
     const handle = this.element.querySelector('.ui-slider-handle');
     const rangeInput = document.querySelector('#range-input');
 

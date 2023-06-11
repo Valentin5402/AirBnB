@@ -16,11 +16,14 @@ application.register("flatpickr", FlatpickrController)
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
 
+import HideCustomerSliderController from "./hide_customer_slider_controller"
+application.register("hide-customer-slider", HideCustomerSliderController)
+
 import MapController from "./map_controller"
 application.register("map", MapController)
 
-import TomselectController from "./tomselect_controller"
-application.register("tomselect", TomselectController)
-
 import SliderController from "./slider_controller"
 application.register("slider", SliderController)
+
+import TomselectController from "./tomselect_controller"
+application.register("tomselect", TomselectController)
