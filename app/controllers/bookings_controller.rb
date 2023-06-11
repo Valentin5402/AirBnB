@@ -57,6 +57,14 @@ class BookingsController < ApplicationController
     end
   end
 
+  def destroy
+    @booking = Booking.find(params[:id])
+    authorize @booking
+    @flat = @booking.flat
+    @booking.destroy
+    redirect_to flat_path(@flat)
+  end
+
   def accept
     @booking = Booking.find(params[:id])
     @flat = @booking.flat
