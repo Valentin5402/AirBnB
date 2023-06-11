@@ -36,7 +36,7 @@
 
           <p>Hôte : <strong><%= booking.user.firstName %> <%= booking.user.lastName %></strong></p>
           <p><strong><%= pluralize (booking.end_date - booking.start_date).to_i, "nuit" %></strong> du <%= booking.start_date %> au <%= booking.end_date %></p>
-          <p class="fs-4"><%= (booking.end_date - booking.start_date).to_i * booking.flat.price_per_night %>€</p>
+          <p class="fs-4"><%= (booking.end_date - booking.start_date).to_i * booking.flat.price_per_night + 8.75*(booking.end_date - booking.start_date).to_i + 10 %>€ <span class="text-14 text-gray fst-italic">(frais et taxes compris)</span></p>
           <% if booking.confirmation == "pending" %>
             <%= link_to "Accepter", accept_booking_path(booking), data: {"turbo-method": :patch}, class: "btn btn-success" %>
             <%= link_to "Refuser", refuse_booking_path(booking), data: {"turbo-method": :patch}, class: "btn btn-danger" %>
