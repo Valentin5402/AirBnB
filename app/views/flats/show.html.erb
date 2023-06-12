@@ -7,15 +7,13 @@
     <% end %>
   </p>
   <div class="d-inline-flex">
-    <div data-action="click->scroll-to-reviews#scroll">
-      <% if @average_rating %>
-        <p><i class="fa-solid fa-star"></i> <%= number_with_precision(@average_rating, precision: 2) %></p>
-        <p class="mx-2">·</p>
-        <p><%= @number_of_reviews %> avis</p>
-      <% else %>
-        <p><i class="fa-solid fa-star"></i> Ce logement n'a pas encore d'avis</p>
-      <% end %>
-    </div>
+    <% if @average_rating %>
+      <p><i class="fa-solid fa-star"></i> <%= number_with_precision(@average_rating, precision: 2) %></p>
+      <p class="mx-2">·</p>
+      <p data-action="click->scroll-to-reviews#scroll"><u><%= @number_of_reviews %> avis</u></p>
+    <% else %>
+      <p><i class="fa-solid fa-star"></i> Ce logement n'a pas encore d'avis</p>
+    <% end %>
     <p class="mx-2">·</p>
     <p><%= @flat.address %></p>
   </div>
@@ -183,7 +181,7 @@
               <p class="m-0"><i class="fa-solid fa-star"></i> <%= number_with_precision(@average_rating, precision: 2) %></p>
               <p class="mx-2 m-0">·</p>
             <% end %>
-            <p class="m-0 text-gray"><%= pluralize @number_of_reviews, "commentaire" %></p>
+            <p class="m-0 text-gray" data-action="click->scroll-to-reviews#scroll"><u><%= pluralize @number_of_reviews, "commentaire" %></u></p>
           </div>
         </div>
         <% if @flat.user != current_user %>
