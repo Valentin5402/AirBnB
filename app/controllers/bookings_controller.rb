@@ -27,7 +27,7 @@ class BookingsController < ApplicationController
     check = check_available(@booking)
     if check
       redirect_back(fallback_location: flat_path(@booking.flat), notice: "Cet appartement est déjà réservé à ces dates.")
-    else
+    elsif
       @booking.confirmation = "pending"
       if @booking.save
         redirect_to flat_path(@flat), notice: "La réservation a bien été effectuée !"
