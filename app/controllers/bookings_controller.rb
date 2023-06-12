@@ -4,8 +4,8 @@ class BookingsController < ApplicationController
   include Pundit
 
   def index
-    @bookings_as_tenant = policy_scope(Booking.where(user_id: current_user.id))
-    @bookings_as_owner = policy_scope(Booking.joins(:flat).where(flats: { user_id: current_user.id }))
+    @bookings_as_tenant = policy_scope(Booking.where(user_id: current_user.id).order(:start_date))
+    @bookings_as_owner = policy_scope(Booking.joins(:flat).where(flats: { user_id: current_user.id }).order(:start_date))
     @bookings = @bookings_as_tenant.to_a + @bookings_as_owner.to_a
     @review = Review.new
   end
@@ -19,50 +19,70 @@ class BookingsController < ApplicationController
   end
 
   def create
-    # raise
     @flat = Flat.find(params[:flat_id])
     @booking = Booking.new(booking_params)
     @booking.user = current_user
     @booking.flat = @flat
     authorize @booking
     check = check_available(@booking)
-    # raise
     if check
       redirect_back(fallback_location: flat_path(@booking.flat), notice: "Cet appartement est déjà réservé à ces dates.")
-    else
-      @review = Review.new
-      @bookings = Booking.all
-      @my_bookings_of_this_flat = @bookings.order(:start_date).select { |booking| booking.user == current_user && booking.flat == @flat }
-      @other_bookings_for_my_flat = @bookings.order(:start_date).select { |booking| @flat.user == current_user && booking.flat == @flat }
-      @past_bookings = @my_bookings_of_this_flat.select { |booking| booking.end_date <= Date.today }
-      @reviews = @flat.reviews
-      @number_of_reviews = @reviews.size
-      @average_rating = @reviews.average(:rating)
-      @flat_equipments = @flat.equipments
-      @marker = [{  lat: @flat.latitude,
-                    lng: @flat.longitude,
-                    info_window: render_to_string(partial: "flats/show_info_window", locals: { flat: @flat }),
-                    marker_html: render_to_string(partial: "flats/show_marker", locals: { flat: @flat })
-                }]
+    elsif
       @booking.confirmation = "pending"
       if @booking.save
-        redirect_to flat_path(@flat)
-        flash[:notice] = "La réservation a bien été effectuée !"
+        redirect_to flat_path(@flat), notice: "La réservation a bien été effectuée !"
         # redirect_back(fallback_location: flat_path(@booking.flat), notice: "La réservation a bien été effectuée !")
       else
-        render "flats/show", status: :unprocessable_entity
-        flash[:notice] = "Vous ne pouvez pas demander la réservation à ces dates."
+        redirect_to flat_path(@flat), notice: "Vous ne pouvez pas demander la réservation à ces dates.", status: :unprocessable_entity
         # redirect_back(fallback_location: flat_path(@booking.flat), notice: "Cet appartement est déjà réservé à ces dates.")
       end
     end
   end
+
+  def edit
+    @booking = Booking.find(params[:id])
+    @flat = @booking.flat
+    authorize @booking
+  end
+
+  def update
+    @booking = Booking.find(params[:id])
+    @booking.confirmation = "pending"
+    authorize @booking
+    if @booking.update(booking_params)
+      # !!! LA NOTICE NE FONCTIONNE PAS MALGRE 2 TENTATIVES DIFFERENTES !!!
+      flash[:notice] = "Votre réservation a bien été mise à jour !"
+      redirect_to bookings_path(@booking), notice: "Votre réservation a bien été mise à jour !"
+    else
+      redirect_back(fallback_location: bookings_path(@booking.flat), notice: "Vous ne pouvez pas demander la réservation à ces dates.")
+    end
+  end
+
+  # !!!!! ESSAI POUR PRENDRE EN COMPTE LA METHODE CHECK EN PRIVATE (EVITER LES SURRESERVATIONS, MAIS CA NE FONCTIONNE PAS !)
+  # def update
+  #   @flat = Flat.find(params[:flat_id])
+  #   @booking = Booking.find(params[:id])
+  #   authorize @booking
+  #   check = check_available(@booking)
+  #   if check
+  #     redirect_back(fallback_location: flat_path(@booking.flat), notice: "Cet appartement est déjà réservé à ces dates.")
+  #   else
+  #     if @booking.update(booking_params)
+  #       redirect_to bookings_path(@booking)
+  #       flash[:notice] = "La réservation a été mise à jour !"
+  #       @booking.confirmation = "pending"
+  #     else
+  #       redirect_back(fallback_location: flat_path(@booking.flat), notice: "Vous ne pouvez pas demander la réservation à ces dates.")
+  #     end
+  #   end
+  # end
 
   def destroy
     @booking = Booking.find(params[:id])
     authorize @booking
     @flat = @booking.flat
     @booking.destroy
-    redirect_to flat_path(@flat)
+    redirect_back(fallback_location: flat_path(@booking.flat), notice: "La réservation a bien été annulée !")
   end
 
   def accept

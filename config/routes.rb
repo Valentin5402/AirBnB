@@ -10,7 +10,7 @@ Rails.application.routes.draw do
     resources :reviews, only: [:index, :create]
   end
 
-  resources :bookings, only: [:index, :show, :destroy] do
+  resources :bookings, only: [:index, :show, :edit, :update, :destroy] do
     member do
       patch 'accept'
       patch 'refuse'

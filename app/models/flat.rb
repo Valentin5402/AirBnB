@@ -13,4 +13,12 @@ class Flat < ApplicationRecord
   validates :photos, presence: { message: "Merci d'ajouter au moins une photo" }
   has_many :flat_equipments, dependent: :destroy
   has_many :equipments, through: :flat_equipments
+
+  # validate :have_a_photo
+
+  # private
+
+  # def have_a_photo
+  #   errors.add(:photos, message:"Test !")
+  # end
 end
