@@ -48,9 +48,7 @@ class BookingsController < ApplicationController
     @booking.confirmation = "pending"
     authorize @booking
     if @booking.update(booking_params)
-      # !!! LA NOTICE NE FONCTIONNE PAS MALGRE 2 TENTATIVES DIFFERENTES !!!
-      flash[:notice] = "Votre réservation a bien été mise à jour !"
-      redirect_to bookings_path(@booking), notice: "Votre réservation a bien été mise à jour !"
+      redirect_to bookings_path, notice: "Votre réservation a bien été mise à jour !"
     else
       redirect_back(fallback_location: bookings_path(@booking.flat), notice: "Vous ne pouvez pas demander la réservation à ces dates.")
     end
@@ -58,20 +56,20 @@ class BookingsController < ApplicationController
 
   # !!!!! ESSAI POUR PRENDRE EN COMPTE LA METHODE CHECK EN PRIVATE (EVITER LES SURRESERVATIONS, MAIS CA NE FONCTIONNE PAS !)
   # def update
-  #   @flat = Flat.find(params[:flat_id])
   #   @booking = Booking.find(params[:id])
+  #   booking = Booking.new(booking_params)
+  #   @flat = @booking.flat
+  #   @booking.confirmation = "pending"
   #   authorize @booking
   #   check = check_available(@booking)
   #   if check
   #     redirect_back(fallback_location: flat_path(@booking.flat), notice: "Cet appartement est déjà réservé à ces dates.")
+  #   elsif @booking.update(booking_params)
+  #     redirect_to flat_path(@flat), notice: "La réservation a bien été effectuée !"
+  #     # redirect_back(fallback_location: flat_path(@booking.flat), notice: "La réservation a bien été effectuée !")
   #   else
-  #     if @booking.update(booking_params)
-  #       redirect_to bookings_path(@booking)
-  #       flash[:notice] = "La réservation a été mise à jour !"
-  #       @booking.confirmation = "pending"
-  #     else
-  #       redirect_back(fallback_location: flat_path(@booking.flat), notice: "Vous ne pouvez pas demander la réservation à ces dates.")
-  #     end
+  #     redirect_to flat_path(@flat), notice: "Vous ne pouvez pas demander la réservation à ces dates.", status: :unprocessable_entity
+  #     # redirect_back(fallback_location: flat_path(@booking.flat), notice: "Cet appartement est déjà réservé à ces dates.")
   #   end
   # end
 
@@ -126,7 +124,6 @@ class BookingsController < ApplicationController
         break
       end
     end
-    # raise
     return check
   end
 

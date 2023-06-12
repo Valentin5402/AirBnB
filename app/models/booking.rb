@@ -11,7 +11,6 @@ class Booking < ApplicationRecord
 
   def end_date_must_be_after_start_date
     errors.add(:end_date, "doit obligatoirement être après la date d'arrivée") if start_date >= end_date
-
   end
 
   def start_date_must_be_after_today
