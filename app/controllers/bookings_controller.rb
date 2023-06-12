@@ -43,35 +43,37 @@ class BookingsController < ApplicationController
     authorize @booking
   end
 
-  def update
-    @booking = Booking.find(params[:id])
-    @booking.confirmation = "pending"
-    authorize @booking
-    if @booking.update(booking_params)
-      redirect_to bookings_path, notice: "Votre réservation a bien été mise à jour !"
-    else
-      redirect_back(fallback_location: bookings_path(@booking.flat), notice: "Vous ne pouvez pas demander la réservation à ces dates.")
-    end
-  end
-
-  # !!!!! ESSAI POUR PRENDRE EN COMPTE LA METHODE CHECK EN PRIVATE (EVITER LES SURRESERVATIONS, MAIS CA NE FONCTIONNE PAS !)
   # def update
   #   @booking = Booking.find(params[:id])
-  #   booking = Booking.new(booking_params)
-  #   @flat = @booking.flat
   #   @booking.confirmation = "pending"
   #   authorize @booking
-  #   check = check_available(@booking)
-  #   if check
-  #     redirect_back(fallback_location: flat_path(@booking.flat), notice: "Cet appartement est déjà réservé à ces dates.")
-  #   elsif @booking.update(booking_params)
-  #     redirect_to flat_path(@flat), notice: "La réservation a bien été effectuée !"
-  #     # redirect_back(fallback_location: flat_path(@booking.flat), notice: "La réservation a bien été effectuée !")
+  #   if @booking.update(booking_params)
+  #     redirect_to bookings_path, notice: "Votre réservation a bien été mise à jour !"
   #   else
-  #     redirect_to flat_path(@flat), notice: "Vous ne pouvez pas demander la réservation à ces dates.", status: :unprocessable_entity
-  #     # redirect_back(fallback_location: flat_path(@booking.flat), notice: "Cet appartement est déjà réservé à ces dates.")
+  #     redirect_back(fallback_location: bookings_path(@booking.flat), notice: "Vous ne pouvez pas demander la réservation à ces dates.")
   #   end
   # end
+
+  # !!!!! ESSAI POUR PRENDRE EN COMPTE LA METHODE CHECK EN PRIVATE (EVITER LES SURRESERVATIONS, MAIS CA NE FONCTIONNE PAS !)
+  def update
+    @booking = Booking.find(params[:id])
+    booking1 = Booking.new(booking_params)
+    booking1.flat = @booking.flat
+    authorize @booking
+    check = check_available(booking1)
+
+    if check
+      redirect_back(fallback_location: flat_path(@booking.flat), notice: "Cet appartement est déjà réservé à ces dates.")
+    else
+      if @booking.update(booking_params)
+        redirect_to flat_path(@flat), notice: "La réservation a bien été effectuée !"
+        # redirect_back(fallback_location: flat_path(@booking.flat), notice: "La réservation a bien été effectuée !")
+      else
+        redirect_to flat_path(@flat), notice: "Vous ne pouvez pas demander la réservation à ces dates.", status: :unprocessable_entity
+        # redirect_back(fallback_location: flat_path(@booking.flat), notice: "Cet appartement est déjà réservé à ces dates.")
+      end
+    end
+  end
 
   def destroy
     @booking = Booking.find(params[:id])
@@ -111,19 +113,20 @@ class BookingsController < ApplicationController
       list_of_reservations << [reservation.start_date, reservation.end_date]
     end
 
-    if current_user != @flat.user then
+    if current_user != booking.flat.user then
       my_reservations = Booking.where(flat: booking.flat, confirmation: "pending", user: current_user)
       my_reservations.each do |reservation|
         list_of_reservations << [reservation.start_date, reservation.end_date]
       end
     end
-
+    # raise
     list_of_reservations.each do |reservation|
       if (booking.start_date > reservation[0] && booking.start_date < reservation[1]) || (booking.end_date > reservation[0] && booking.end_date < reservation[1]) || (booking.start_date <= reservation[0] && booking.end_date >= reservation[1])
         check = true
         break
       end
     end
+
     return check
   end
 
