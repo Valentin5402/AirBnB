@@ -6,13 +6,13 @@ class ReviewsController < ApplicationController
     authorize @review
   end
 
-  def new
-    @review = Review.new
-    authorize @review
-  end
+  # def new
+  #   @review = Review.new
+  #   authorize @review
+  # end
 
   def create
-    @flat = Flat.find(params[:id])
+    @flat = Flat.find(params[:flat_id])
     @review = Review.new(review_params)
     @review.user = current_user
     @review.booking_id = Booking.where(flat_id: params['flat_id'], user_id: current_user.id)[0].id
