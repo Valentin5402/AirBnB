@@ -1,4 +1,4 @@
-<div class="container mt-4">
+<div class="container mt-4" data-controller="scroll-to-reviews">
   <h1><%= @flat.name %></h1>
   <p>
     <% if @flat.user == current_user %>
@@ -10,7 +10,7 @@
     <% if @average_rating %>
       <p><i class="fa-solid fa-star"></i> <%= number_with_precision(@average_rating, precision: 2) %></p>
       <p class="mx-2">·</p>
-      <p><%= @number_of_reviews %> avis</p>
+      <p data-action="click->scroll-to-reviews#scroll"><u><%= @number_of_reviews %> avis</u></p>
     <% else %>
       <p><i class="fa-solid fa-star"></i> Ce logement n'a pas encore d'avis</p>
     <% end %>
@@ -176,12 +176,12 @@
             <p class="my-0 mx-2">par nuit</p>
           </div>
 
-          <div class="d-inline-flex align-items-center">
+          <div class="d-inline-flex align-items-center" data-action="click->scroll-to-reviews#scroll">
             <% if @average_rating %>
               <p class="m-0"><i class="fa-solid fa-star"></i> <%= number_with_precision(@average_rating, precision: 2) %></p>
               <p class="mx-2 m-0">·</p>
             <% end %>
-            <p class="m-0 text-gray"><%= pluralize @number_of_reviews, "commentaire" %></p>
+            <p class="m-0 text-gray" data-action="click->scroll-to-reviews#scroll"><u><%= pluralize @number_of_reviews, "commentaire" %></u></p>
           </div>
         </div>
         <% if @flat.user != current_user %>
@@ -204,18 +204,15 @@
 
   </div>
 
-  <div class="border-top py-4 mb-4">
+  <div class="border-top py-4 mb-4" data-scroll-to-reviews-target="reviews">
     <div class="d-inline-flex text-24">
       <% if @reviews.empty? %>
         <p>Ce logement n'a pas encore de commentaire</p>
       <% else %>
-
           <p><i class="fa-solid fa-star"></i> <%= number_with_precision(@average_rating, precision: 2) %></p>
           <p class="mx-2">·</p>
           <p><%= pluralize @number_of_reviews, "commentaire" %></p>
-
       <% end %>
-
     </div>
 
     <% @reviews.each do |review| %>
