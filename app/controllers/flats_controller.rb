@@ -53,6 +53,9 @@ class FlatsController < ApplicationController
     @flat = Flat.new(params_flat)
     @flat.user = current_user
     @flat.equipments = Equipment.where(id: params[:flat][:equipment_ids])
+    params[:flat][:photos].each do |photo|
+      @flat.photos.attach(photo)
+    end
     authorize @flat
     if @flat.save
       redirect_to flats_path

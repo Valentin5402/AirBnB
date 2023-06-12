@@ -116,24 +116,30 @@
                   <p class="fw-bold text-warning">
                     <i class="fa-solid fa-clock"></i> Réservation en attente du <%= booking.start_date %> au <%= booking.end_date %>
                   </p>
-                  <%= render "bookings/link_to_destroy",{booking: booking} %>
+                  <%# <%= render "bookings/link_to_destroy",{booking: booking} %>
                 </div>
+                <%= link_to "Modifier", edit_booking_path(booking), class: "btn btn-info btn-sm" %>
+                <%= link_to "Annuler", booking_path(booking), data: {turbo_method: :delete, turbo_confirm: "Êtes-vous sûr de vouloir annuler cette réservation ?"}, class: "btn btn-danger btn-sm" %>
+                <hr>
               <% elsif booking.confirmation == "accepted" %>
                 <div class="d-flex justify-content-between">
                   <p class="fw-bold text-success">
                     <i class="fa-solid fa-check"></i> Réservé du <%= booking.start_date %> au <%= booking.end_date %>
                   </p>
-                  <%= render "bookings/link_to_destroy",{booking: booking} %>
+                  <%# <%= render "bookings/link_to_destroy",{booking: booking} %>
                 </div>
+                <%= link_to "Modifier", edit_booking_path(booking), class: "btn btn-info btn-sm" %>
+                <%= link_to "Annuler", booking_path(booking), data: {turbo_method: :delete, turbo_confirm: "Êtes-vous sûr de vouloir annuler cette réservation ?"}, class: "btn btn-danger btn-sm" %>
+                <hr>
               <% else %>
                 <div class="d-flex justify-content-between">
                   <p class="fw-bold text-danger">
                     <i class="fa-solid fa-xmark"></i> Réservation refusée par l'hôte !
                   </p>
-                  <%= render "bookings/link_to_destroy",{booking: booking} %>
+                  <%# <%= render "bookings/link_to_destroy",{booking: booking} %>
                 </div>
+                <hr>
               <% end %>
-
             <% end %>
           </div>
         </div>

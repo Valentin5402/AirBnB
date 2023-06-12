@@ -38,7 +38,7 @@
           <p><strong><%= pluralize (booking.end_date - booking.start_date).to_i, "nuit" %></strong> du <%= booking.start_date %> au <%= booking.end_date %></p>
           <p class="fs-4"><%= (booking.end_date - booking.start_date).to_i * booking.flat.price_per_night + 8.75*(booking.end_date - booking.start_date).to_i + 10 %>€ <span class="text-14 text-gray fst-italic">(frais et taxes compris)</span></p>
           <% if booking.confirmation == "pending" %>
-            <%= link_to "Accepter", accept_booking_path(booking), data: {"turbo-method": :patch}, class: "btn btn-success" %>
+            <%= link_to "Accepter", accept_booking_path(booking), data: {"turbo-method": :patch}, class: "btn btn-success me-3" %>
             <%= link_to "Refuser", refuse_booking_path(booking), data: {"turbo-method": :patch}, class: "btn btn-danger" %>
           <% elsif booking.confirmation == "accepted" %>
             <p class="fw-bold text-success"><i class="fa-solid fa-check"></i> Acceptée</p>
@@ -92,10 +92,15 @@
           <p class="fs-4"><%= (booking.end_date - booking.start_date).to_i * booking.flat.price_per_night %>€</p>
           <% if booking.confirmation == "pending" %>
             <p class="fw-bold text-warning"><i class="fa-solid fa-clock"></i> En attente d'acceptation</p>
+            <%= link_to "Modifier", edit_booking_path(booking), class: "btn btn-info btn-sm me-2" %>
+            <%= link_to "Annuler", booking_path(booking), data: {turbo_method: :delete, turbo_confirm: "Êtes-vous sûr de vouloir annuler cette réservation ?"}, class: "btn btn-danger btn-sm" %>
+            <%# <%= render "bookings/link_to_destroy", {booking: booking} %>
           <% elsif booking.confirmation == "refused" %>
             <p class="fw-bold text-danger"><i class="fa-solid fa-xmark"></i> Refusée</p>
           <% else %>
             <p class="fw-bold text-success"><i class="fa-solid fa-check"></i> Acceptée</p>
+            <%= link_to "Modifier", edit_booking_path(booking), class: "btn btn-info btn-sm me-2" %>
+            <%= link_to "Annuler", booking_path(booking), data: {turbo_method: :delete, turbo_confirm: "Êtes-vous sûr de vouloir annuler cette réservation ?"}, class: "btn btn-danger btn-sm" %>
             <% if !booking.reviews.exists? && booking.end_date <= Date.today %>
                 <%= simple_form_for ([booking, @review]) do |f| %>
                 <%= f.hidden_field :booking_id, value: booking.id %>
