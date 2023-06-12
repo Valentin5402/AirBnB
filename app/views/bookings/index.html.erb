@@ -8,8 +8,9 @@
     <% @bookings_as_owner.each_with_index do |booking, index| %>
       <div class="col-md-4 mt-3 d-flex align-items-stretch">
         <div class="card-details p-4">
-          <%= link_to booking.flat.name, flat_path(booking.flat), class: "text-decoration-none fs-5 text-black fw-bold" %>
-
+          <div style="height: 56px">
+            <%= link_to booking.flat.name, flat_path(booking.flat), class: "text-decoration-none fs-5 text-black fw-bold" %>
+          </div>
 
           <div id=<%= "carouselExampleIndicators#{index}" %> class="carousel slide my-3" data-bs-ride=<%= "carouselExampleIndicators#{index}" %>>
             <ol class="carousel-indicators">
@@ -62,7 +63,9 @@
     <% @bookings_as_tenant.each_with_index do |booking, index| %>
       <div class="col-md-4 mt-3 d-flex align-items-stretch mt-4">
         <div class="card-details p-4">
-          <%= link_to booking.flat.name, flat_path(booking.flat), class: "text-decoration-none fs-5 text-black fw-bold" %>
+          <div style="height: 56px">
+            <%= link_to booking.flat.name, flat_path(booking.flat), class: "text-decoration-none fs-5 text-black fw-bold" %>
+          </div>
 
           <div id=<%= "carouselExampleIndicators#{index}" %> class="carousel slide my-3" data-bs-ride=<%= "carouselExampleIndicators#{index}" %>>
             <ol class="carousel-indicators">

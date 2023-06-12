@@ -22,6 +22,9 @@ application.register("hide-customer-slider", HideCustomerSliderController)
 import MapController from "./map_controller"
 application.register("map", MapController)
 
+import ScrollToReviewsController from "./scroll_to_reviews_controller"
+application.register("scroll-to-reviews", ScrollToReviewsController)
+
 import SliderController from "./slider_controller"
 application.register("slider", SliderController)
 

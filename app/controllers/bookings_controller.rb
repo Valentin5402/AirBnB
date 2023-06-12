@@ -23,19 +23,17 @@ class BookingsController < ApplicationController
     @booking = Booking.new(booking_params)
     @booking.user = current_user
     @booking.flat = @flat
+    @booking.confirmation = "pending"
     authorize @booking
     check = check_available(@booking)
     if check
       redirect_back(fallback_location: flat_path(@booking.flat), notice: "Cet appartement est déjà réservé à ces dates.")
-    elsif
-      @booking.confirmation = "pending"
-      if @booking.save
-        redirect_to flat_path(@flat), notice: "La réservation a bien été effectuée !"
-        # redirect_back(fallback_location: flat_path(@booking.flat), notice: "La réservation a bien été effectuée !")
-      else
-        redirect_to flat_path(@flat), notice: "Vous ne pouvez pas demander la réservation à ces dates.", status: :unprocessable_entity
-        # redirect_back(fallback_location: flat_path(@booking.flat), notice: "Cet appartement est déjà réservé à ces dates.")
-      end
+    elsif @booking.save
+      redirect_to flat_path(@flat), notice: "La réservation a bien été effectuée !"
+      # redirect_back(fallback_location: flat_path(@booking.flat), notice: "La réservation a bien été effectuée !")
+    else
+      redirect_to flat_path(@flat), notice: "Vous ne pouvez pas demander la réservation à ces dates.", status: :unprocessable_entity
+      # redirect_back(fallback_location: flat_path(@booking.flat), notice: "Cet appartement est déjà réservé à ces dates.")
     end
   end
 
