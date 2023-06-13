@@ -57,21 +57,19 @@ class BookingsController < ApplicationController
   # !!!!! ESSAI POUR PRENDRE EN COMPTE LA METHODE CHECK EN PRIVATE (EVITER LES SURRESERVATIONS, MAIS CA NE FONCTIONNE PAS !)
   def update
     @booking = Booking.find(params[:id])
-    booking1 = Booking.new(booking_params)
-    booking1.flat = @booking.flat
+    new_booking = Booking.new(booking_params)
+    new_booking.flat = @booking.flat
+    @flat = @booking.flat
     authorize @booking
-    check = check_available(booking1)
-
+    check = check_available(new_booking)
     if check
       redirect_back(fallback_location: flat_path(@booking.flat), notice: "Cet appartement est déjà réservé à ces dates.")
+    elsif @booking.update(booking_params)
+      redirect_to flat_path(@flat), notice: "Votre réservation a bien été mise à jour !"
+      # redirect_back(fallback_location: flat_path(@booking.flat), notice: "La réservation a bien été effectuée !")
     else
-      if @booking.update(booking_params)
-        redirect_to flat_path(@flat), notice: "La réservation a bien été effectuée !"
-        # redirect_back(fallback_location: flat_path(@booking.flat), notice: "La réservation a bien été effectuée !")
-      else
-        redirect_to flat_path(@flat), notice: "Vous ne pouvez pas demander la réservation à ces dates.", status: :unprocessable_entity
-        # redirect_back(fallback_location: flat_path(@booking.flat), notice: "Cet appartement est déjà réservé à ces dates.")
-      end
+      redirect_to flat_path(@flat), notice: "Vous ne pouvez pas demander la réservation à ces dates.", status: :unprocessable_entity
+      # redirect_back(fallback_location: flat_path(@booking.flat), notice: "Cet appartement est déjà réservé à ces dates.")
     end
   end
 
