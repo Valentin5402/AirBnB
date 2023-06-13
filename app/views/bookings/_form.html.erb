@@ -1,6 +1,6 @@
 <%= simple_form_for [@flat, @booking], data: { controller: 'flatpickr booking', price_per_night: @flat.price_per_night  } do |f| %>
-  <%= f.input :start_date, as: :string, html5: true, input_html: {data: { flatpickr_target: "startDate", booking_target: "startDate" }, value: @booking.start_date || Date.today}, label: 'Date d\'arrivée' %>
-  <%= f.input :end_date, as: :string, html5: true, input_html: {data: { flatpickr_target: "endDate", booking_target: "endDate", action: "change->booking#calculatePrice" }, id: 'end_time',value: @booking.end_date || Date.today + 1}, label: 'Date de départ' %>
+  <%= f.input :start_date, as: :string, html5: true, input_html: {data: { flatpickr_target: "startDate", booking_target: "startDate", action:"click->flatpickr#associerFlatpickr" }, value: @booking.start_date || Date.today}, label: 'Date d\'arrivée', html: {autocomplete: 'off'} %>
+  <%= f.input :end_date, as: :string, html5: true, input_html: {data: { flatpickr_target: "endDate", booking_target: "endDate", action: "change->booking#calculatePrice click->flatpickr#associerFlatpickr" }, id: 'end_time',value: @booking.end_date || Date.today + 1}, label: 'Date de départ', html: {autocomplete: 'off'} %>
   <%= f.button :submit, "Réserver", class: "btn btn-primary btn-block", style: "width:100%;" %>
 
   <div data-booking-target="infos">
